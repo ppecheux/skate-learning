@@ -30,5 +30,8 @@
       "prettier --write",
       "eslint --fix"
     ]
+  },
+  "dependencies": {
+    "react-google-login": "^5.1.20"
   }
 }

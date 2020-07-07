@@ -30,6 +30,7 @@ import {
   People as PeopleIcon,
 } from '@material-ui/icons'
 import Dashboard from './components/Dashboard'
+import GoogleBtn from './components/GoogleBtn';
 
 function Copyright() {
   return (
@@ -176,7 +177,7 @@ export default function App() {
               noWrap
               className={classes.title}
             >
-              Welcome To GRANDstack App
+              Start learning skateboard
             </Typography>
           </Toolbar>
         </AppBar>
@@ -225,6 +226,7 @@ export default function App() {
 
             <Box pt={4}>
               <Copyright />
+              <GoogleBtn />
             </Box>
           </Container>
         </main>
