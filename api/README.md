@@ -1,4 +1,4 @@
-# GRANDstack Starter - GraphQL API
+# learn skateboard with the askate community
 
 
 ## Quick Start
