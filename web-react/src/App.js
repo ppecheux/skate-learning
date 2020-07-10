@@ -1,9 +1,8 @@
-import React from 'react'
+import React, { useState, useMemo } from 'react'
+import { UserProvider } from './UserContext'
 
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-
-import UserList from './components/UserList'
-
+import { BrowserRouter as Router } from 'react-router-dom'
+import AppRouter from './AppRouter'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import {
@@ -29,21 +28,22 @@ import {
   Dashboard as DashboardIcon,
   People as PeopleIcon,
 } from '@material-ui/icons'
-import Dashboard from './components/Dashboard'
 import GoogleBtn from './components/GoogleBtn';
+
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <MUILink color="inherit" href="https://grandstack.io/">
-        Your GRANDstack App Name Here
+      <MUILink color="inherit" href="https://grandstack.io/">{/* TODO change this link */}
+        aSkate
       </MUILink>{' '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
   )
 }
+
 
 const drawerWidth = 240
 
@@ -144,6 +144,10 @@ export default function App() {
     setOpen(false)
   }
 
+  const [user, setUser] = useState(null);
+
+  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
+
   return (
     <Router>
       <div className={classes.root}>
@@ -218,16 +222,17 @@ export default function App() {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            <Switch>
-              <Route exact path="/" component={Dashboard} />
-              <Route exact path="/businesses" component={UserList} />
-              <Route exact path="/users" component={UserList} />
-            </Switch>
+            <UserProvider>
+              <AppRouter />
 
-            <Box pt={4}>
-              <Copyright />
-              <GoogleBtn />
-            </Box>
+              <Box pt={4}>
+                <Copyright />
+
+
+                <GoogleBtn />
+
+              </Box>
+            </UserProvider>
           </Container>
         </main>
       </div>

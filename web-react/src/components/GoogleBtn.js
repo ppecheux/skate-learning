@@ -1,27 +1,27 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import ReactDOM from 'react-dom';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-
-
-const CLIENT_ID = '828739223424-07f84oug16a0fic0l33496fcsa55634n.apps.googleusercontent.com';
-
-
+import { UserContext } from '../UserContext';
+import { withUserContext } from '../UserContext';
 class GoogleBtn extends Component {
+
     constructor(props) {
+
         super(props);
+
 
         this.state = {
             isLogined: false,
             accessToken: ''
         };
-
-        this.login = this.login.bind(this);
-        this.handleLoginFailure = this.handleLoginFailure.bind(this);
-        this.logout = this.logout.bind(this);
-        this.handleLogoutFailure = this.handleLogoutFailure.bind(this);
     }
 
-    login(response) {
+
+    componentDidMount() {
+        console.log(this.props.userProvider.user)
+    }
+
+    login = (response) => {
         console.log(response)
         console.log(response.profileObj)
         if (response.accessToken !== undefined) {
@@ -31,35 +31,45 @@ class GoogleBtn extends Component {
             });
         }
         console.log(this.state)
-    }
+        console.log(response.profileObj.email)
 
-    logout(response) {
+        console.log(this.props.userProvider.setUser)
+        console.log(this.props.userProvider.user)
+        this.props.userProvider.setUser({ id: response.profileObj.email })
+        console.log(this.props.userProvider.user)
+    };
+
+    logout = (response) => {
         this.setState(state => ({
             isLogined: false,
             accessToken: ''
         }));
+        this.props.userProvider.setUser(null)
     }
 
-    handleLoginFailure(response) {
+    handleLoginFailure = (response) => {
         alert('Failed to log in')
     }
 
-    handleLogoutFailure(response) {
+    handleLogoutFailure = (response) => {
         alert('Failed to log out')
     }
 
     render() {
+        console.log(this.props.userProvider.user)
+
         return (
             <div>
+
                 {this.state.isLogined ?
                     <GoogleLogout
-                        clientId={CLIENT_ID}
+                        clientId={process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID}
                         buttonText='Logout'
                         onLogoutSuccess={this.logout}
                         onFailure={this.handleLogoutFailure}
                     >
                     </GoogleLogout> : <GoogleLogin
-                        clientId={CLIENT_ID}
+                        clientId={process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID}
                         buttonText='Login'
                         onSuccess={this.login}
                         onFailure={this.handleLoginFailure}
@@ -74,4 +84,4 @@ class GoogleBtn extends Component {
     }
 }
 
-export default GoogleBtn;
+export default withUserContext(GoogleBtn);
