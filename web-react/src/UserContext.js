@@ -1,60 +1,36 @@
-import React, { Component } from 'react';
-export const UserContext = React.createContext({
-    user: {},
-    setUser: () => { }
-});
+import React, { Component } from 'react'
 
-export class UserProvider extends Component {
+const UserContext = React.createContext()
+
+class UserProvider extends Component {
+    // Context state
     state = {
-        user: {
-            id: null
-        },
+        user: {},
     }
 
+    // Method to update state
     setUser = (user) => {
-        console.log(user)
-        this.setState({ user })
+        this.setState((prevState) => ({ user }))
     }
-
-    getValues = () => {
-        return {
-            ...this.state,
-            setUser: this.setUser
-        }
-    }
-
 
     render() {
+        const { children } = this.props
+        const { user } = this.state
+        const { setUser } = this
+
         return (
-            <UserContext.Provider value={this.getValues()}>
-                {this.props.children}
+            <UserContext.Provider
+                value={{
+                    user,
+                    setUser,
+                }}
+            >
+                {children}
             </UserContext.Provider>
-        );
+        )
     }
 }
 
-export const UserConsumer = UserContext.Consumer;
+export default UserContext
 
-export default {
-    Provider: UserProvider,
-    Consumer: UserConsumer,
-}
-
-export function withUserContext(Component) {
-
-    class ComponentWithContext extends React.Component {
-        static navigationOptions = {
-            ...Component.navigationOptions
-        };
-
-        render() {
-            return (
-                <UserContext.Consumer>
-                    {(value) => <Component {...this.props} userProvider={value} />}
-                </UserContext.Consumer>
-            );
-        };
-    }
-
-    return ComponentWithContext;
-}
+export { UserProvider }

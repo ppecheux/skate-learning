@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { withStyles } from '@material-ui/core/styles'
 import { GoogleLogin } from 'react-google-login'
 import dotenv from 'dotenv'
-import { withUserContext } from '../UserContext';
+import UserContext from '../UserContext';
 
 import {
   Paper
@@ -29,6 +29,7 @@ const styles = (theme) => ({
 
 
 class UserProfile extends Component {
+  static contextType = UserContext
 
   constructor(props) {
     super(props);
@@ -47,12 +48,14 @@ class UserProfile extends Component {
   }
 
   render() {
-    console.log(this.props.userProvider.user)
+    const { user, setUser } = this.context
+    console.log(user)
     return (
+
 
       <Paper className={this.props.root}>
         <Title>User Profile</Title>
-        <pre>{JSON.stringify(this.props.userProvider.user, null, 2)}</pre>
+        <pre>{JSON.stringify(user, null, 2)}</pre>
 
         <GoogleLogin
           clientId={clientId}
@@ -65,4 +68,4 @@ class UserProfile extends Component {
   }
 }
 
-export default withStyles(styles)(withUserContext(UserProfile))
+export default withStyles(styles)(UserProfile)

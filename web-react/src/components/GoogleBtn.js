@@ -1,14 +1,13 @@
 import React, { Component, useContext } from 'react'
-import ReactDOM from 'react-dom';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { UserContext } from '../UserContext';
-import { withUserContext } from '../UserContext';
+import UserContext from '../UserContext';
 class GoogleBtn extends Component {
+
+    static contextType = UserContext
 
     constructor(props) {
 
         super(props);
-
 
         this.state = {
             isLogined: false,
@@ -18,10 +17,13 @@ class GoogleBtn extends Component {
 
 
     componentDidMount() {
-        console.log(this.props.userProvider.user)
+        const { user, setUser } = this.context
+
+        console.log(user)
     }
 
     login = (response) => {
+        const { user, setUser } = this.context
         console.log(response)
         console.log(response.profileObj)
         if (response.accessToken !== undefined) {
@@ -33,18 +35,19 @@ class GoogleBtn extends Component {
         console.log(this.state)
         console.log(response.profileObj.email)
 
-        console.log(this.props.userProvider.setUser)
-        console.log(this.props.userProvider.user)
-        this.props.userProvider.setUser({ id: response.profileObj.email })
-        console.log(this.props.userProvider.user)
+        console.log(setUser)
+        console.log(user)
+        setUser({ id: response.profileObj.email })
+        console.log(user)
     };
 
     logout = (response) => {
+        const { user, setUser } = this.context
         this.setState(state => ({
             isLogined: false,
             accessToken: ''
         }));
-        this.props.userProvider.setUser(null)
+        setUser(null)
     }
 
     handleLoginFailure = (response) => {
@@ -56,7 +59,6 @@ class GoogleBtn extends Component {
     }
 
     render() {
-        console.log(this.props.userProvider.user)
 
         return (
             <div>
@@ -84,4 +86,4 @@ class GoogleBtn extends Component {
     }
 }
 
-export default withUserContext(GoogleBtn);
+export default GoogleBtn;
