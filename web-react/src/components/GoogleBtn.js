@@ -36,8 +36,8 @@ class GoogleBtn extends Component {
                 familyName: response.profileObj.familyName,
                 count: "TODO"
             }
-            let responseDbUser = await getDbUserCount(newUser);
-            console.log(responseDbUser)
+            const responseDbUser = await getDbUserCount(newUser);
+            console.log(await responseDbUser)
             console.log(newUser)
             const { accessToken, refreshToken } = createTokens(newUser);
             const cookies = new Cookies();

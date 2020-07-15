@@ -1,4 +1,4 @@
-const GET_USER_QUERY = `
+const GET_USER_COUNT_QUERY = `
 query UserQuery($email: String!) {
   User(email: $email) {
     count
@@ -6,27 +6,44 @@ query UserQuery($email: String!) {
 }
 `
 
-export async function getDbUserCount(user) {
-    let responseDbUser;
-    try {
+const ADD_NEW_USER = `
+mutation ($email: String!){
+    CreateUser(email: $email, count: 0) {
+        email
+        count
+    }  
+}
+`
 
-        const path = '/graphql'
+export async function getDbUserCount(user) {
+
+    const path = '/graphql'
+    let responseDbUser = await fetch(path, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query: GET_USER_COUNT_QUERY,
+            variables: { email: user.email }
+        })
+    })
+
+    let json = await responseDbUser.json()
+    if (json.data.User.lenght) {
+        return json.data.User[0]
+    } else {
         responseDbUser = await fetch(path, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                query: GET_USER_QUERY,
+                query: ADD_NEW_USER,
                 variables: { email: user.email }
             })
         })
-    } catch (error) {
-        console.log(error);
+        json = await responseDbUser.json()
+        return json.data.createUser
     }
-    if (!responseDbUser) {
-        return;
-    }
-    console.log(responseDbUser)
-    return responseDbUser
 }
