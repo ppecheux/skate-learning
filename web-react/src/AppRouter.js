@@ -21,6 +21,7 @@ function AppRouter() {
             <Route exact path="/users" component={UserList} />
             <Route exact path="/profile" component={UserProfile} />
         </Switch>
+
     );
 }
 

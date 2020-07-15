@@ -1,6 +1,8 @@
 type User {
-  userId: ID!
-  name: String
+  email: String!
+  firstName: String
+  lastName:String
+  count:Int
   reviews: [Review] @relation(name: "WROTE", direction: "OUT")
   avgStars: Float
     @cypher(

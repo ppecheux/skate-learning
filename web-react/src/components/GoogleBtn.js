@@ -1,6 +1,10 @@
-import React, { Component, useContext } from 'react'
+import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import UserContext from '../UserContext';
+import { createTokens } from "../auth";
+import Cookies from 'universal-cookie';
+import { getDbUserCount } from '../model/User'
+
 class GoogleBtn extends Component {
 
     static contextType = UserContext
@@ -15,29 +19,34 @@ class GoogleBtn extends Component {
         };
     }
 
-
-    componentDidMount() {
-        const { user, setUser } = this.context
-
-        console.log(user)
-    }
-
-    login = (response) => {
-        const { user, setUser } = this.context
+    login = async (response) => {
         console.log(response)
         console.log(response.profileObj)
+
+        const { user, setUser } = this.context
+        let newUser;
         if (response.accessToken !== undefined) {
             this.setState({
                 isLogined: true,
                 accessToken: response.accessToken
             });
+            newUser = {
+                email: response.profileObj.email,
+                givenName: response.profileObj.givenName,
+                familyName: response.profileObj.familyName,
+                count: "TODO"
+            }
+            let responseDbUser = await getDbUserCount(newUser);
+            console.log(responseDbUser)
+            console.log(newUser)
+            const { accessToken, refreshToken } = createTokens(newUser);
+            const cookies = new Cookies();
+            cookies.set("refresh-token", refreshToken);
+            cookies.set("access-token", accessToken);
+            console.log(cookies.get('refresh-token'));
         }
         console.log(this.state)
-        console.log(response.profileObj.email)
-
-        console.log(setUser)
-        console.log(user)
-        setUser({ id: response.profileObj.email })
+        setUser(newUser)
         console.log(user)
     };
 
