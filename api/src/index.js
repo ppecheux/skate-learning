@@ -8,6 +8,7 @@ import { initializeDatabase } from './initialize'
 import { verify } from "jsonwebtoken";
 import { createTokens } from "./auth";
 import cookieParser from 'cookie-parser';
+import resolvers from './resolvers'
 /* import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http'; 
@@ -25,15 +26,15 @@ dotenv.config()
 * in generated queries and/or mutations. Read more in the docs:
 * https://grandstack.io/docs/neo4j-graphql-js-api.html#makeaugmentedschemaoptions-graphqlschema
 */
-
 const schema = makeAugmentedSchema({
-  typeDefs,
+  typeDefs: typeDefs,
+  resolvers: resolvers,
   config: {
     query: {
       exclude: ['RatingCount'],
     },
     mutation: {
-      exclude: ['RatingCount'],
+      exclude: ['RatingCount', 'SignInResponse'],
     },
   },
 })
@@ -177,6 +178,7 @@ app.use(async (req, res, next) => {
 
   next();
 });
+
 /*
 * Optionally, apply Express middleware for authentication, etc
 * This also also allows us to specify a path for the GraphQL endpoint

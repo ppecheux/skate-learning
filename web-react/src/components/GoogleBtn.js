@@ -23,6 +23,25 @@ class GoogleBtn extends Component {
         console.log(response)
         console.log(response.profileObj)
 
+
+        const options = {
+            method: 'post'
+        }
+
+        fetch('/login', options)
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        alert('Email not found, please retry')
+                    }
+                    if (response.status === 401) {
+                        alert('Email and password do not match, please retry')
+                    }
+                } else {
+                    console.log(response)
+                }
+            })
+
         const { user, setUser } = this.context
         let newUser;
         if (response.accessToken !== undefined) {

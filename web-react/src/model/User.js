@@ -30,7 +30,7 @@ export async function getDbUserCount(user) {
     })
 
     let json = await responseDbUser.json()
-    if (json.data.User.lenght) {
+    if (json.data & json.data.User & json.data.User.lenght) {
         return json.data.User[0]
     } else {
         responseDbUser = await fetch(path, {
@@ -44,6 +44,6 @@ export async function getDbUserCount(user) {
             })
         })
         json = await responseDbUser.json()
-        return json.data.createUser
+        return json.data.CreateUser
     }
 }
