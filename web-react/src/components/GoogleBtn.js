@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import UserContext from '../UserContext';
-import { createTokens } from "../auth";
 import Cookies from 'universal-cookie';
 import { getDbUserCount } from '../model/User'
 
@@ -22,25 +21,7 @@ class GoogleBtn extends Component {
     login = async (response) => {
         console.log(response)
         console.log(response.profileObj)
-
-
-        const options = {
-            method: 'post'
-        }
-
-        fetch('/login', options)
-            .then(response => {
-                if (!response.ok) {
-                    if (response.status === 404) {
-                        alert('Email not found, please retry')
-                    }
-                    if (response.status === 401) {
-                        alert('Email and password do not match, please retry')
-                    }
-                } else {
-                    console.log(response)
-                }
-            })
+        console.log(response.getAuthResponse().id_token)
 
         const { user, setUser } = this.context
         let newUser;
@@ -49,24 +30,35 @@ class GoogleBtn extends Component {
                 isLogined: true,
                 accessToken: response.accessToken
             });
-            newUser = {
-                email: response.profileObj.email,
-                givenName: response.profileObj.givenName,
-                familyName: response.profileObj.familyName,
-                count: "TODO"
-            }
-            const responseDbUser = await getDbUserCount(newUser);
-            console.log(await responseDbUser)
+            const responseSignInGoogle = await fetch(
+                '/graphql',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        query: `{
+                                                    signInGoogle(tokenId: "${response.getAuthResponse().id_token}"){
+                                                      code,
+                                                      success, 
+                                                      message, 
+                                                      accessToken,
+                                                      refreshToken
+                                                    }  
+                                                  }`
+                    })
+                }
+            )
+            newUser = await responseSignInGoogle.json()
             console.log(newUser)
-            const { accessToken, refreshToken } = createTokens(newUser);
             const cookies = new Cookies();
-            cookies.set("refresh-token", refreshToken);
-            cookies.set("access-token", accessToken);
+            cookies.set("refresh-token", newUser.data.signInGoogle.refreshToken);
+            cookies.set("access-token", newUser.data.signInGoogle.accessToken);
             console.log(cookies.get('refresh-token'));
         }
         console.log(this.state)
         setUser(newUser)
-        console.log(user)
     };
 
     logout = (response) => {
