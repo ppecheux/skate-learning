@@ -5,15 +5,8 @@ import neo4j from 'neo4j-driver'
 import { makeAugmentedSchema } from 'neo4j-graphql-js'
 import dotenv from 'dotenv'
 import { initializeDatabase } from './initialize'
-import { verify } from "jsonwebtoken";
-import { createTokens } from "./auth";
-import cookieParser from 'cookie-parser';
 import resolvers from './resolvers'
-/* import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http'; 
-import { useQuery } from '@apollo/react-hooks' */
-import gql from 'graphql-tag';
+
 // set environment variables from .env
 dotenv.config()
 
@@ -96,88 +89,6 @@ const path = process.env.GRAPHQL_SERVER_PATH || '/graphql'
 const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
 
 const app = express()
-app.use(cookieParser());
-
-
-/* const cache = new InMemoryCache();
-const link = new HttpLink({
-  uri: `http://${host}:${port}${path}`,
-}); */
-
-const GET_USER_QUERY = gql`
-query UserQuery($email: String!) {
-  User(email: $email) {
-    count
-  }
-}
-`
-
-app.use(async (req, res, next) => {
-  const refreshToken = req.cookies["refresh-token"];
-  const accessToken = req.cookies["access-token"];
-  if (!refreshToken && !accessToken) {
-    return next();
-  }
-
-  try {
-    const data = verify(accessToken, process.env.JW_ACCESS_TOKEN_SECRET);
-    req.userEmail = data.userEmail;
-    return next();
-  } catch { }
-
-  if (!refreshToken) {
-    return next();
-  }
-
-  let data;
-
-  try {
-    data = verify(refreshToken, process.env.JW_REFRESH_TOKEN_SECRET);
-  } catch {
-    return next();
-  }
-
-
-
-
-  let user;
-  try {
-
-    const response = await fetch(`http://${host}:${port}${path}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: gql`
-        {
-          User(email: ${data.userEmail}) {
-            count
-          }
-        }
-        `
-        ,
-      }),
-    })
-  } catch (error) {
-    console.log(error);
-  }
-  // const user = await User.findOne(data.userEmail);
-  // token has been invalidated
-  user = response.data.User
-  console.log(user)
-  if (!user || user.count !== data.count) {
-    return next();
-  }
-
-  const tokens = createTokens(user);
-
-  res.cookie("refresh-token", tokens.refreshToken);
-  res.cookie("access-token", tokens.accessToken);
-  req.userEmail = user.email;
-
-  next();
-});
 
 /*
 * Optionally, apply Express middleware for authentication, etc

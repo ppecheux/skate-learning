@@ -2,7 +2,15 @@ import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import UserContext from '../UserContext';
 import Cookies from 'universal-cookie';
-import { getDbUserCount } from '../model/User'
+import ApolloClient from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import gql from 'graphql-tag';
+
+const client = new ApolloClient({
+    link: new HttpLink({ uri: '/graphql', fetch }),
+    cache: new InMemoryCache(),
+})
 
 class GoogleBtn extends Component {
 
@@ -19,10 +27,6 @@ class GoogleBtn extends Component {
     }
 
     login = async (response) => {
-        console.log(response)
-        console.log(response.profileObj)
-        console.log(response.getAuthResponse().id_token)
-
         const { user, setUser } = this.context
         let newUser;
         if (response.accessToken !== undefined) {
@@ -30,32 +34,26 @@ class GoogleBtn extends Component {
                 isLogined: true,
                 accessToken: response.accessToken
             });
-            const responseSignInGoogle = await fetch(
-                '/graphql',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        query: `{
-                                                    signInGoogle(tokenId: "${response.getAuthResponse().id_token}"){
-                                                      code,
-                                                      success, 
-                                                      message, 
-                                                      accessToken,
-                                                      refreshToken
-                                                    }  
-                                                  }`
-                    })
+            const newUser = await client.query({
+                query: gql`
+                    query getSignIn($tokenId: String!){
+                        signInGoogle(tokenId: $tokenId){
+                            code,
+                            success, 
+                            message, 
+                            accessToken,
+                            refreshToken
+                        }
+                    }
+                    `
+                ,
+                variables: {
+                    tokenId: response.getAuthResponse().id_token
                 }
-            )
-            newUser = await responseSignInGoogle.json()
-            console.log(newUser)
+            })
             const cookies = new Cookies();
             cookies.set("refresh-token", newUser.data.signInGoogle.refreshToken);
             cookies.set("access-token", newUser.data.signInGoogle.accessToken);
-            console.log(cookies.get('refresh-token'));
         }
         console.log(this.state)
         setUser(newUser)
