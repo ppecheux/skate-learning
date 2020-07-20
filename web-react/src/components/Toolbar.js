@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag';
@@ -17,6 +17,8 @@ import {
 const cookies = new Cookies();
 
 function ProfilePictureOrLogin(props) {
+  const classes = props.classes
+
   const loginPicture = <IconButton
     aria-label="account of current user"
     aria-controls="menu-appbar"
@@ -28,21 +30,17 @@ function ProfilePictureOrLogin(props) {
   </IconButton>
 
   const token = cookies.get('accessToken')
-
-
   const user = decode(token);
-  console.log(user)
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
       User(email: $email) {
-        profilePicture
+        profilePicture,
+        given_name
       }
     }
     `, {
     variables: { email: user.userEmail }
   })
-  console.log(data)
-
 
   if (loading || error || !data.User || !data.User.length) {
     if (error) {
@@ -53,7 +51,9 @@ function ProfilePictureOrLogin(props) {
     )
   } else {
     return (
-      <Avatar alt="profile Picture" src={data.User[0].profilePicture} />
+      <Link to="/profile">
+        <Avatar alt={data.User[0].given_name} src={data.User[0].profilePicture} href="/profile" className={classes.orange} />
+      </Link>
     )
   }
 
@@ -64,11 +64,7 @@ export function TopToolbar(props) {
   const handleDrawerOpen = props.handleDrawerOpen
   const open = props.open
 
-
   return (
-
-
-
     <Toolbar className={classes.toolbar}>
 
       <IconButton
@@ -99,7 +95,7 @@ export function TopToolbar(props) {
     </Typography>
       {
         cookies.get('accessToken') ?
-          <ProfilePictureOrLogin /> :
+          <ProfilePictureOrLogin classes={classes} /> :
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -110,7 +106,6 @@ export function TopToolbar(props) {
             <AccountCircle />
           </IconButton>
       }
-
 
     </Toolbar>
 

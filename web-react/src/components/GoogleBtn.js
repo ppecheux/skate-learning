@@ -46,8 +46,12 @@ class GoogleBtn extends Component {
                 }
             })
             const cookies = new Cookies();
-            cookies.set("refreshToken", newUser.data.signInGoogle.refreshToken);
-            cookies.set("accessToken", newUser.data.signInGoogle.accessToken);
+            cookies.set(
+                "refreshToken",
+                newUser.data.signInGoogle.refreshToken,
+                { expires: new Date(Date.now() + 15 * 60) }
+            );
+            cookies.set("accessToken", newUser.data.signInGoogle.accessToken, { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
         }
         console.log(this.state)
         setUser(newUser)

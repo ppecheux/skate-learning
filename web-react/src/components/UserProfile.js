@@ -1,6 +1,4 @@
 import React, { Component, useContext } from 'react'
-import { useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
 import { withStyles } from '@material-ui/core/styles'
 import { GoogleLogin } from 'react-google-login'
 import dotenv from 'dotenv'
@@ -11,7 +9,6 @@ import {
 } from '@material-ui/core'
 
 import Title from './Title'
-console.log(process.env)
 
 dotenv.config()
 
@@ -26,7 +23,6 @@ const styles = (theme) => ({
     margin: 'auto',
   }
 })
-
 
 class UserProfile extends Component {
   static contextType = UserContext
@@ -49,7 +45,6 @@ class UserProfile extends Component {
 
   render() {
     const { user, setUser } = this.context
-    console.log(user)
     return (
 
 

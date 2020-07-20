@@ -65,8 +65,7 @@
       "REACT_APP_GRAPHQL_URI": "/graphql",
       "NEO4J_URI": "@grand_stack_starter_neo4j_uri",
       "NEO4J_USER": "@grand_stack_starter_neo4j_user",
-      "NEO4J_PASSWORD": "@grand_stack_starter_neo4j_password",
-      "REACT_APP_GOOGLE_LOGIN_CLIENT_ID": "828739223424-07f84oug16a0fic0l33496fcsa55634n.apps.googleusercontent.com"
+      "NEO4J_PASSWORD": "@grand_stack_starter_neo4j_password"
     }
   },
   "env": {
@@ -76,7 +75,6 @@
     "REACT_APP_GRAPHQL_URI": "/graphql",
     "PROXY": "http://localhost:4001/graphql",
     "GRAPHQL_LISTEN_PORT": "4001",
-    "GRAPHQL_URI": "/graphql",
-    "REACT_APP_GOOGLE_LOGIN_CLIENT_ID": "828739223424-07f84oug16a0fic0l33496fcsa55634n.apps.googleusercontent.com"
+    "GRAPHQL_URI": "/graphql"
   }
 }
