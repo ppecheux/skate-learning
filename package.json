@@ -41,6 +41,7 @@
     "graphql": "^15.3.0",
     "graphql-auth-directives": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^2.2.0",
     "neo4j-graphql-binding": "^1.2.0",
     "node-fetch": "^2.6.0",
     "react-google-login": "^5.1.20",

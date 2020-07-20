@@ -10,7 +10,6 @@ import {
   Drawer,
   Box,
   AppBar,
-  Toolbar,
   List,
   Typography,
   Divider,
@@ -29,7 +28,7 @@ import {
   People as PeopleIcon,
 } from '@material-ui/icons'
 import GoogleBtn from './components/GoogleBtn';
-
+import { TopToolbar } from './components/Toolbar';
 
 function Copyright() {
   return (
@@ -137,11 +136,13 @@ const useStyles = makeStyles((theme) => ({
 export default function App() {
   const classes = useStyles()
   const [open, setOpen] = React.useState(true)
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
+
   const handleDrawerClose = () => {
     setOpen(false)
+  }
+
+  const handleDrawerOpen = () => {
+    setOpen(true)
   }
 
   const [user, setUser] = useState(null);
@@ -156,34 +157,12 @@ export default function App() {
           position="absolute"
           className={clsx(classes.appBar, open && classes.appBarShift)}
         >
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              className={clsx(
-                classes.menuButton,
-                open && classes.menuButtonHidden
-              )}
-            >
-              <MenuIcon />
-            </IconButton>
-            <img
-              className={classes.appBarImage}
-              src="img/grandstack.png"
-              alt="GRANDstack logo"
-            />
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              className={classes.title}
-            >
-              Start learning skateboard
-            </Typography>
-          </Toolbar>
+          <TopToolbar
+            open={open}
+            onChange={handleDrawerClose}
+            classes={classes}
+            handleDrawerOpen={handleDrawerOpen}
+          />
         </AppBar>
         <Drawer
           variant="permanent"
@@ -227,10 +206,6 @@ export default function App() {
 
               <Box pt={4}>
                 <Copyright />
-
-
-                <GoogleBtn />
-
               </Box>
             </UserProvider>
           </Container>

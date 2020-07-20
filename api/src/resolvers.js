@@ -35,8 +35,8 @@ export default ({
                     profilePicture: picture
                 }
 
-                const dbUser = signInDb(user);
-                const { refreshToken, accessToken } = createTokens(dbUser)
+                const dbUser = await signInDb(user);
+                const { refreshToken, accessToken } = createTokens({ ...dbUser, ...user })
                 return {
                     code: 200,
                     success: true,
