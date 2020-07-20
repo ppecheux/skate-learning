@@ -3,12 +3,36 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
-import ApolloClient from 'apollo-boost'
+import ApolloClient from 'apollo-client'
 import { ApolloProvider } from '@apollo/react-hooks'
+import dotenv from 'dotenv'
 
-const client = new ApolloClient({
+import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import Cookies from 'universal-cookie';
+dotenv.config()
+const cookies = new Cookies();
+
+const httpLink = createHttpLink({
   uri: process.env.REACT_APP_GRAPHQL_URI || '/graphql',
-})
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = cookies.get('accessToken')
+  console.log(token)
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    }
+  }
+});
+
+export const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache()
+});
 
 const Main = () => (
   <ApolloProvider client={client}>

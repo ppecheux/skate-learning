@@ -5,7 +5,10 @@ import neo4j from 'neo4j-driver'
 import { makeAugmentedSchema } from 'neo4j-graphql-js'
 import dotenv from 'dotenv'
 import { initializeDatabase } from './initialize'
+import { IsAuthenticatedDirective, HasRoleDirective, HasScopeDirective } from 'graphql-auth-directives'
 import resolvers from './resolvers'
+
+
 
 // set environment variables from .env
 dotenv.config()
@@ -22,6 +25,11 @@ dotenv.config()
 const schema = makeAugmentedSchema({
   typeDefs: typeDefs,
   resolvers: resolvers,
+  schemaDirectives: {
+    isAuthenticated: IsAuthenticatedDirective,
+    hasRole: HasRoleDirective,
+    hasScope: HasScopeDirective
+  },
   config: {
     query: {
       exclude: ['RatingCount'],
@@ -74,11 +82,14 @@ init(driver)
 * generated resolvers to connect to the database.
 */
 const server = new ApolloServer({
-  context: {
-    driver,
-    neo4jDatabase: process.env.NEO4J_DATABASE
-  },
   schema: schema,
+  context: ({ req }) => {
+    return {
+      driver,
+      req,
+      neo4jDatabase: process.env.NEO4J_DATABASE,
+    };
+  },
   introspection: true,
   playground: true,
 })
@@ -88,6 +99,7 @@ const port = process.env.GRAPHQL_SERVER_PORT || 4001
 const path = process.env.GRAPHQL_SERVER_PATH || '/graphql'
 const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
 
+export const JWT_SECRET = process.env.JW_ACCESS_TOKEN_SECRET // for graphql-auth-directives
 const app = express()
 
 /*

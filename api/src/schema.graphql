@@ -1,3 +1,6 @@
+directive @hasRole(roles: [Role]) on OBJECT | FIELD_DEFINITION
+directive @isAuthenticated on OBJECT | FIELD_DEFINITION
+
 type User {
   email: String! 
   given_name: String
@@ -63,13 +66,13 @@ type Mutation {
     )
 }
 
-type Query {
+type Query {  
   userCount: Int! @cypher(statement: "MATCH (u:User) RETURN COUNT(u)")
   ratingsCount: [RatingCount]
     @cypher(
       statement: "MATCH (r:Review) WITH r.stars AS stars, COUNT(*) AS count ORDER BY stars RETURN {stars: stars, count: count}"
     )
-    hello: String @neo4j_ignore
+    hello: String @neo4j_ignore @isAuthenticated
     signIn(email: String): String @neo4j_ignore
     signInGoogle(tokenId: String!): SignInResponse! @neo4j_ignore
 
@@ -82,4 +85,10 @@ type SignInResponse {
     "a JSON Web Token string that gives the user permission to access ShoutOut and make call to the ShoutOut API"
     accessToken: String
     refreshToken: String
+}
+
+enum Role {
+  admin
+  reader
+  user
 }

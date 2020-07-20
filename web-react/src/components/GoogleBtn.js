@@ -2,15 +2,9 @@ import React, { Component } from 'react'
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import UserContext from '../UserContext';
 import Cookies from 'universal-cookie';
-import ApolloClient from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
 import gql from 'graphql-tag';
+import { client } from '../index'
 
-const client = new ApolloClient({
-    link: new HttpLink({ uri: '/graphql', fetch }),
-    cache: new InMemoryCache(),
-})
 
 class GoogleBtn extends Component {
 
@@ -52,8 +46,8 @@ class GoogleBtn extends Component {
                 }
             })
             const cookies = new Cookies();
-            cookies.set("refresh-token", newUser.data.signInGoogle.refreshToken);
-            cookies.set("access-token", newUser.data.signInGoogle.accessToken);
+            cookies.set("refreshToken", newUser.data.signInGoogle.refreshToken);
+            cookies.set("accessToken", newUser.data.signInGoogle.accessToken);
         }
         console.log(this.state)
         setUser(newUser)
