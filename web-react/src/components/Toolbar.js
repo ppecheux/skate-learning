@@ -16,21 +16,21 @@ import {
 
 const cookies = new Cookies();
 
+const loginPicture = <IconButton
+  aria-label="account of current user"
+  aria-controls="menu-appbar"
+  aria-haspopup="true"
+  color="inherit"
+>
+  <Link to="/login">
+    <AccountCircle />
+  </Link>
+</IconButton>
+
+
 function ProfilePictureOrLogin(props) {
   const classes = props.classes
-
-  const loginPicture = <IconButton
-    aria-label="account of current user"
-    aria-controls="menu-appbar"
-    aria-haspopup="true"
-    color="inherit"
-    href="/login"
-  >
-    <AccountCircle />
-  </IconButton>
-
-  const token = cookies.get('accessToken')
-  const user = decode(token);
+  const user = decode(props.token);
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
       User(email: $email) {
@@ -63,7 +63,7 @@ export function TopToolbar(props) {
   const classes = props.classes
   const handleDrawerOpen = props.handleDrawerOpen
   const open = props.open
-
+  const token = cookies.get('accessToken')
   return (
     <Toolbar className={classes.toolbar}>
 
@@ -94,17 +94,7 @@ export function TopToolbar(props) {
         Start learning skateboard
     </Typography>
       {
-        cookies.get('accessToken') ?
-          <ProfilePictureOrLogin classes={classes} /> :
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            color="inherit"
-            href="/login"
-          >
-            <AccountCircle />
-          </IconButton>
+        token ? <ProfilePictureOrLogin classes={classes} token={token} /> : loginPicture
       }
 
     </Toolbar>
