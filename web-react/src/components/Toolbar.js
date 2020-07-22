@@ -6,9 +6,9 @@ import gql from 'graphql-tag';
 import Cookies from 'universal-cookie';
 import { Toolbar, IconButton } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Avatar from '@material-ui/core/Avatar';
 import clsx from 'clsx'
 import { decode } from 'jsonwebtoken'
+import ProfilePictureMenu from './ProfilePictureMenu'
 
 import {
   Menu as MenuIcon,
@@ -51,9 +51,8 @@ function ProfilePictureOrLogin(props) {
     )
   } else {
     return (
-      <Link to="/profile">
-        <Avatar alt={data.User[0].given_name} src={data.User[0].profilePicture} href="/profile" className={classes.orange} />
-      </Link>
+      <ProfilePictureMenu classes={props.classes} user={data.User[0]} />
+
     )
   }
 
@@ -96,7 +95,6 @@ export function TopToolbar(props) {
       {
         token ? <ProfilePictureOrLogin classes={classes} token={token} /> : loginPicture
       }
-
     </Toolbar>
 
   )
