@@ -53,8 +53,8 @@ class GoogleBtn extends Component {
             );
             cookies.set("accessToken", newUser.data.signInGoogle.accessToken, { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
         }
-        console.log(this.state)
         setUser(newUser)
+        window.location.replace("/");
     };
 
     logout = (response) => {

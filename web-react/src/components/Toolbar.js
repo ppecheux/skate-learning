@@ -23,7 +23,7 @@ const loginPicture = <IconButton
   color="inherit"
 >
   <Link to="/login">
-    <AccountCircle />
+    <AccountCircle style={{ color: "white" }} />
   </Link>
 </IconButton>
 
