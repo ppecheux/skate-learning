@@ -28,9 +28,8 @@ const loginPicture = <IconButton
 </IconButton>
 
 
-function ProfilePictureOrLogin(props) {
-  const classes = props.classes
-  const user = decode(props.token);
+function ProfilePictureOrLogin({ classes, token }) {
+  const user = decode(token);
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
       User(email: $email) {
@@ -51,7 +50,7 @@ function ProfilePictureOrLogin(props) {
     )
   } else {
     return (
-      <ProfilePictureMenu classes={props.classes} user={data.User[0]} />
+      <ProfilePictureMenu classes={classes} user={data.User[0]} />
 
     )
   }

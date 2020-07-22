@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './AppRouter'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
+import { orange } from '@material-ui/core/colors';
 import {
   CssBaseline,
   Drawer,
@@ -130,6 +131,10 @@ const useStyles = makeStyles((theme) => ({
   appBarImage: {
     maxHeight: '75px',
     paddingRight: '20px',
+  },
+  altProfilePicture: {
+    color: theme.palette.getContrastText(orange[500]),
+    backgroundColor: orange[500],
   },
 }))
 
