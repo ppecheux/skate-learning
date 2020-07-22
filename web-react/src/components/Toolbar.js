@@ -16,16 +16,17 @@ import {
 
 const cookies = new Cookies();
 
-const loginPicture = <IconButton
-  aria-label="account of current user"
-  aria-controls="menu-appbar"
-  aria-haspopup="true"
-  color="inherit"
->
+const loginPicture =
   <Link to="/login">
-    <AccountCircle style={{ color: "white" }} />
+    <IconButton
+      aria-label="account of current user"
+      aria-controls="menu-appbar"
+      aria-haspopup="true"
+      color="inherit"
+    >
+      <AccountCircle style={{ color: "white" }} />
+    </IconButton>
   </Link>
-</IconButton>
 
 
 function ProfilePictureOrLogin({ classes, token }) {
