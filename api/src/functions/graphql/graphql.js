@@ -5,7 +5,7 @@ const { ApolloServer } = require('apollo-server-lambda')
 const { makeAugmentedSchema } = require('neo4j-graphql-js')
 const neo4j = require('neo4j-driver')
 const { IsAuthenticatedDirective, HasRoleDirective, HasScopeDirective } = require('graphql-auth-directives')
-const resolvers = require('../../resolvers')
+const { resolvers } = require('../../resolvers')
 // This module is copied during the build step
 // Be sure to run `npm run build`
 const { typeDefs } = require('./graphql-schema')

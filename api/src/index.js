@@ -6,7 +6,7 @@ import { makeAugmentedSchema } from 'neo4j-graphql-js'
 import dotenv from 'dotenv'
 import { initializeDatabase } from './initialize'
 import { IsAuthenticatedDirective, HasRoleDirective, HasScopeDirective } from 'graphql-auth-directives'
-import resolvers from './resolvers'
+import { resolvers } from './resolvers'
 
 
 

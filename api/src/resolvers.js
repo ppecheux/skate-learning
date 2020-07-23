@@ -4,7 +4,7 @@ import { createTokens } from "./auth";
 
 const client = new OAuth2Client(process.env.REACT_APP_GOOGLE_LOGIN_CLIENT_ID);
 
-export default ({
+export const resolvers = ({
     Query: {
         hello: () => 'world',
         signIn: async (obj, { email }, context, info) => {
