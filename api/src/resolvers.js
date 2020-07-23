@@ -35,11 +35,11 @@ export default ({
                     profilePicture: picture
                 }
                 return {
-                    code: 200,
-                    success: true,
+                    code: 401,
+                    success: false,
                     message: "User is going to be queried in db",
-                    accessToken: accessToken,
-                    refreshToken: refreshToken
+                    accessToken: "",
+                    refreshToken: ""
                 }
                 /*                 const dbUser = await signInDb(user);
                                 const { refreshToken, accessToken } = createTokens({ ...dbUser, ...user })

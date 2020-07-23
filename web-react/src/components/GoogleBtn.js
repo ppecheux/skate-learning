@@ -46,15 +46,22 @@ class GoogleBtn extends Component {
                 }
             })
             const cookies = new Cookies();
-            cookies.set(
-                "refreshToken",
-                newUser.data.signInGoogle.refreshToken,
-                { expires: new Date(Date.now() + 15 * 60) }
-            );
-            cookies.set("accessToken", newUser.data.signInGoogle.accessToken, { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
+            if (newUser.data.signInGoogle.success) {
+
+                cookies.set(
+                    "refreshToken",
+                    newUser.data.signInGoogle.refreshToken,
+                    { expires: new Date(Date.now() + 15 * 60) }
+                );
+                cookies.set("accessToken", newUser.data.signInGoogle.accessToken, { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
+
+
+                window.location.replace("/");
+            } else {
+                console.log(newUser)
+                setUser(newUser)
+            }
         }
-        setUser(newUser)
-        window.location.replace("/");
     };
 
     logout = (response) => {
