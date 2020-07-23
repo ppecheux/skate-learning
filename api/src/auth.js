@@ -12,7 +12,7 @@ export const createTokens = (user) => {
             expiresIn: "7d"
         }
     );
-    const accessToken = sign({ userEmail: user.email }, process.env.JW_ACCESS_TOKEN_SECRET, {
+    const accessToken = sign({ userEmail: user.email }, process.env.JWT_SECRET, {
         expiresIn: "15min"
     });
     console.log(accessToken)

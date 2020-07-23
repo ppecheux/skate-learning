@@ -99,7 +99,6 @@ const port = process.env.GRAPHQL_SERVER_PORT || 4001
 const path = process.env.GRAPHQL_SERVER_PATH || '/graphql'
 const host = process.env.GRAPHQL_SERVER_HOST || '0.0.0.0'
 
-export const JWT_SECRET = process.env.JW_ACCESS_TOKEN_SECRET // for graphql-auth-directives
 const app = express()
 
 /*
