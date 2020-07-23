@@ -21,8 +21,7 @@ class GoogleBtn extends Component {
     }
 
     login = async (response) => {
-        const { user, setUser } = this.context
-        let newUser;
+        const { setUser } = this.context
         if (response.accessToken !== undefined) {
             this.setState({
                 isLogined: true,
@@ -65,7 +64,7 @@ class GoogleBtn extends Component {
     };
 
     logout = (response) => {
-        const { user, setUser } = this.context
+        const { setUser } = this.context
         this.setState(state => ({
             isLogined: false,
             accessToken: ''

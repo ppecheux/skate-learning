@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react'
+import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { GoogleLogin } from 'react-google-login'
 import dotenv from 'dotenv'
@@ -44,7 +44,7 @@ class UserProfile extends Component {
   }
 
   render() {
-    const { user, setUser } = this.context
+    const { user } = this.context
     return (
 
 

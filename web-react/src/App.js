@@ -1,6 +1,5 @@
-import React, { useState, useMemo } from 'react'
+import React from 'react'
 import { UserProvider } from './UserContext'
-
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './AppRouter'
 import clsx from 'clsx'
@@ -24,11 +23,9 @@ import {
 import { Link } from 'react-router-dom'
 import {
   ChevronLeft as ChevronLeftIcon,
-  Menu as MenuIcon,
   Dashboard as DashboardIcon,
   People as PeopleIcon,
 } from '@material-ui/icons'
-import GoogleBtn from './components/GoogleBtn';
 import { TopToolbar } from './components/Toolbar';
 
 function Copyright() {
@@ -150,9 +147,6 @@ export default function App() {
     setOpen(true)
   }
 
-  const [user, setUser] = useState(null);
-
-  const value = useMemo(() => ({ user, setUser }), [user, setUser]);
 
   return (
     <Router>
