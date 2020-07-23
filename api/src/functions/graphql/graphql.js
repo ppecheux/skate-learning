@@ -4,7 +4,8 @@
 const { ApolloServer } = require('apollo-server-lambda')
 const { makeAugmentedSchema } = require('neo4j-graphql-js')
 const neo4j = require('neo4j-driver')
-
+const { IsAuthenticatedDirective, HasRoleDirective, HasScopeDirective } = require('graphql-auth-directives')
+const resolvers = require('../../resolvers')
 // This module is copied during the build step
 // Be sure to run `npm run build`
 const { typeDefs } = require('./graphql-schema')
@@ -21,7 +22,23 @@ const driver = neo4j.driver(
 )
 
 const server = new ApolloServer({
-  schema: makeAugmentedSchema({ typeDefs }),
+  schema: makeAugmentedSchema({
+    typeDefs: typeDefs,
+    resolvers: resolvers,
+    schemaDirectives: {
+      isAuthenticated: IsAuthenticatedDirective,
+      hasRole: HasRoleDirective,
+      hasScope: HasScopeDirective
+    },
+    config: {
+      query: {
+        exclude: ['RatingCount'],
+      },
+      mutation: {
+        exclude: ['RatingCount', 'SignInResponse'],
+      },
+    },
+  }),
   context: { driver, neo4jDatabase: process.env.NEO4J_DATABASE },
 })
 

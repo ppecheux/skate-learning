@@ -34,22 +34,16 @@ export default ({
                     family_name: family_name,
                     profilePicture: picture
                 }
+
+                const dbUser = await signInDb(user);
+                const { refreshToken, accessToken } = createTokens({ ...dbUser, ...user })
                 return {
-                    code: 401,
-                    success: false,
-                    message: "User is going to be queried in db",
-                    accessToken: "",
-                    refreshToken: ""
+                    code: 200,
+                    success: true,
+                    message: "you are loged in",
+                    accessToken: accessToken,
+                    refreshToken: refreshToken
                 }
-                /*                 const dbUser = await signInDb(user);
-                                const { refreshToken, accessToken } = createTokens({ ...dbUser, ...user })
-                                return {
-                                    code: 200,
-                                    success: true,
-                                    message: "you are loged in",
-                                    accessToken: accessToken,
-                                    refreshToken: refreshToken
-                                } */
 
             } else {
                 return {
