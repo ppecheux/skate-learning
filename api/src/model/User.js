@@ -12,8 +12,11 @@ const {
     GRAPHQL_SERVER_PORT: port,
     GRAPHQL_SERVER_PATH: path,
 } = process.env
-
-const uri = `http://${host}:${port}${path}`
+let uri = `http://${host}`
+if (port) {
+    uri = uri.concat(`:${port}`)
+}
+uri = uri.concat(`${path}`)
 const client = new ApolloClient({
     link: new HttpLink({ uri, fetch }),
     cache: new InMemoryCache(),
