@@ -58,10 +58,7 @@ function ProfilePictureOrLogin({ classes, token }) {
 
 }
 
-export function TopToolbar(props) {
-  const classes = props.classes
-  const handleDrawerOpen = props.handleDrawerOpen
-  const open = props.open
+export function TopToolbar({ classes, open, handleDrawerOpen }) {
   const token = cookies.get('accessToken')
   return (
     <Toolbar className={classes.toolbar}>

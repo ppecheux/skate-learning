@@ -201,7 +201,7 @@ export default function App() {
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <UserProvider>
-              <AppRouter />
+              <AppRouter classes={classes} />
 
               <Box pt={4}>
                 <Copyright />
