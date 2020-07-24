@@ -7,6 +7,8 @@ type User {
   family_name:String
   count:Int
   profilePicture: String
+  biography:String
+  userName:String
   reviews: [Review] @relation(name: "WROTE", direction: "OUT")
   avgStars: Float
     @cypher(

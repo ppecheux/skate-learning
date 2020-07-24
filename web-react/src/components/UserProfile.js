@@ -8,8 +8,8 @@ import { decode } from 'jsonwebtoken'
 import { useQuery } from '@apollo/react-hooks'
 import Cookies from 'universal-cookie';
 import gql from 'graphql-tag';
-import PersonIcon from '@material-ui/icons/Person';
 import EditIcon from '@material-ui/icons/Edit';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const cookies = new Cookies();
 const token = cookies.get('accessToken')
@@ -20,58 +20,83 @@ function UserProfileGrid({ user, classes }) {
     query UserQuery($email: String!) {
       User(email: $email) {
         profilePicture,
-        given_name
+        userName,
+        biography
       }
     }
     `, {
     variables: { email: user.userEmail }
   })
   const avatarStyle = { height: null }
-  let avatar = <Avatar style={avatarStyle}>
-    <PersonIcon />
-  </Avatar>
   if (loading || error || !data.User || !data.User.length) {
     if (error) {
       console.log(error)
-      user = { given_name: "Error" }
+      return (null)
     } else if (loading) {
-      user = { given_name: "Loading" }
+      user = { loading: true }
     } else {
-      user = { given_name: "no User" }
+      user = { notFound: true }
     }
   } else {
     user = data.User[0]
-    avatar = <Avatar alt={user.given_name} src={user.profilePicture} style={avatarStyle} />
   }
   return (
-    <Grid container spacing={3}>
-      <Grid item xs>
-        {avatar}
-      </Grid>
-      <Grid item xs>
-        <Typography
-          component="h3"
-          variant="h6"
-          color="inherit"
-          noWrap
-          className={classes.title}
-        >
-          {user.given_name}
-        </Typography>
-      </Grid>
-      <Grid item xs>
-        <Link to="/editProfile">
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
+    <div>
+      <Grid container spacing={3}>
+        <Grid item xs>
+          {
+            user.userName && user.profilePicture
+              ? <Avatar alt={user.userName} src={user.profilePicture} style={avatarStyle} />
+              : <Skeleton variant="circle"><Avatar /></Skeleton>
+
+          }
+        </Grid>
+        <Grid item xs>
+          <Typography
+            component="h3"
+            variant="h6"
             color="inherit"
+            noWrap
+            className={classes.title}
           >
-            <EditIcon />
-          </IconButton>
-        </Link>
+            {
+              user.userName
+                ? user.userName
+                : user.loading
+                  ? <Skeleton />
+                  : "new rider"
+
+            }
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          <Link to="/editProfile">
+            <IconButton
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <EditIcon />
+            </IconButton>
+          </Link>
+        </Grid>
       </Grid>
-    </Grid>
+      <Typography
+        variant="h6"
+        color="inherit"
+        noWrap
+        className={classes.title}
+      >
+        {
+          user.biography
+            ? user.biography
+            : user.loading
+              ? <Skeleton />
+              : "Happy to join the askate community 😊"
+        }
+      </Typography>
+    </div>
   )
 }
 
