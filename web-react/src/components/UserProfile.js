@@ -45,8 +45,8 @@ function UserProfileGrid({ user, classes }) {
       <Grid container spacing={3}>
         <Grid item xs>
           {
-            user.userName && user.profilePicture
-              ? <Avatar alt={user.userName} src={user.profilePicture} style={avatarStyle} />
+            user.profilePicture
+              ? <Avatar alt={user.userName ? user.userName : "n"} src={user.profilePicture} style={avatarStyle} />
               : <Skeleton variant="circle"><Avatar /></Skeleton>
 
           }

@@ -5,6 +5,7 @@ import UserList from './components/UserList'
 import UserProfile from './components/UserProfile'
 import Dashboard from './components/Dashboard'
 import GoogleBtn from './components/GoogleBtn'
+import { UserProfileForm } from './components/UserProfileForm'
 
 function AppRouter({ classes }) {
     return (
@@ -14,6 +15,7 @@ function AppRouter({ classes }) {
             <Route exact path="/users" component={UserList} />
             <Route exact path="/profile" render={(classes) => <UserProfile classes={classes} />} />
             <Route exact path="/login" component={GoogleBtn} />
+            <Route exact path="/editProfile" component={UserProfileForm} />
         </Switch>
     );
 }

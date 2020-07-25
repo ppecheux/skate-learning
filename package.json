@@ -38,6 +38,7 @@
     "apollo-client": "^2.6.10",
     "apollo-link-context": "^1.0.20",
     "cookie-parser": "^1.4.5",
+    "formik": "^2.1.5",
     "google-auth-library": "^6.0.5",
     "graphql": "^15.3.0",
     "graphql-auth-directives": "^2.2.0",
@@ -46,6 +47,7 @@
     "neo4j-graphql-binding": "^1.2.0",
     "node-fetch": "^2.6.0",
     "react-google-login": "^5.1.20",
-    "universal-cookie": "^4.0.3"
+    "universal-cookie": "^4.0.3",
+    "yup": "^0.29.1"
   }
 }
