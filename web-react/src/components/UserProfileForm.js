@@ -1,5 +1,11 @@
-import React from 'react';
+import React from "react";
+import ReactDOM from "react-dom";
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
+import PublishIcon from '@material-ui/icons/Publish';
+import InfoIcon from '@material-ui/icons/Info';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import TextField from "@material-ui/core/TextField";
 import * as Yup from 'yup';
 
 export const UserProfileForm = () => {
@@ -21,13 +27,19 @@ export const UserProfileForm = () => {
             }}
         >
             <Form>
-                <label htmlFor="userName">userName</label>
-                <Field name="userName" type="text" />
+                <label htmlFor="userName">
+                    <PersonIcon />
+                </label>
+                <TextField name="userName" type="text" />
                 <ErrorMessage name="userName" />
-                <label htmlFor="biography">Biograhy</label>
-                <Field name="biography" type="text" />
+                <label htmlFor="biography">
+                    <InfoIcon />
+                </label>
+                <TextField name="biography" type="text" />
                 <ErrorMessage name="biography" />
-                <button type="submit">Submit</button>
+                <button type="submit">
+                    <PublishIcon />
+                </button>
             </Form>
         </Formik>
     );
