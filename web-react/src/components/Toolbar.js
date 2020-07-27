@@ -1,17 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import Typography from '@material-ui/core/Typography'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag';
 import Cookies from 'universal-cookie';
 import { Toolbar, IconButton } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import clsx from 'clsx'
 import { decode } from 'jsonwebtoken'
 import ProfilePictureMenu from './ProfilePictureMenu'
 
 import {
-  Menu as MenuIcon,
+  FormatListBulleted as FormatListBulletedIcon,
 } from '@material-ui/icons'
 
 const cookies = new Cookies();
@@ -62,33 +60,16 @@ export function TopToolbar({ classes, open, handleDrawerOpen }) {
   const token = cookies.get('accessToken')
   return (
     <Toolbar className={classes.toolbar}>
-
-      <IconButton
-        edge="start"
-        color="inherit"
-        aria-label="open drawer"
-        onClick={handleDrawerOpen}
-        className={clsx(
-          classes.menuButton,
-          open && classes.menuButtonHidden
-        )}
-      >
-        <MenuIcon />
-      </IconButton>
-      <img
-        className={classes.appBarImage}
-        src="img/grandstack.png"
-        alt="GRANDstack logo"
-      />
-      <Typography
-        component="h1"
-        variant="h6"
-        color="inherit"
-        noWrap
-        className={classes.title}
-      >
-        Start learning skateboard
-    </Typography>
+      <Link to="/">
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <FormatListBulletedIcon style={{ color: "white" }} />
+        </IconButton>
+      </Link>
       {
         token ? <ProfilePictureOrLogin classes={classes} token={token} /> : loginPicture
       }
