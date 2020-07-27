@@ -37,35 +37,31 @@ export const UserProfileForm = () => {
                         setSubmitting(false);
                     }, 400);
                 }}
-                render={({ submitForm, isSubmitting }) => (
-                    <Form>
-                        <Box margin={1}>
-
-                            <label htmlFor="userName">
-                                <PersonIcon />
-                            </label>
-                            <Field component={TextField} name="userName" type="text" />
-                        </Box>
-                        <Box margin={1}>
-
-                            <label htmlFor="biography">
-                                <InfoIcon />
-                            </label>
-                            <Field component={TextField} name="biography" type="text" />
-                        </Box>
-                        <Box margin={1}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                disabled={isSubmitting}
-                                onClick={submitForm}
-                            >
-                                <PublishIcon />
-                            </Button>
-                        </Box>
-                    </Form>
-                )}
-            />
+            >
+                <Form>
+                    <Box margin={1}>
+                        <label htmlFor="userName">
+                            <PersonIcon />
+                        </label>
+                        <Field component={TextField} name="userName" type="text" />
+                    </Box>
+                    <Box margin={1}>
+                        <label htmlFor="biography">
+                            <InfoIcon />
+                        </label>
+                        <Field component={TextField} name="biography" type="text" />
+                    </Box>
+                    <Box margin={1}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            type="submit"
+                        >
+                            <PublishIcon />
+                        </Button>
+                    </Box>
+                </Form>
+            </Formik>
         </div>
     );
 };
