@@ -1,4 +1,9 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import { decode } from 'jsonwebtoken'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import Cookies from 'universal-cookie';
+import gql from 'graphql-tag';
 import Box from '@material-ui/core/Box';
 import {
     TextField,
@@ -8,13 +13,74 @@ import {
 } from '@material-ui/core';
 import {
     Person as PersonIcon,
-    Publish as PublishIcon,
+    Save as SaveIcon,
     Info as InfoIcon
 } from '@material-ui/icons'
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const cookies = new Cookies();
+const token = cookies.get('accessToken')
 
 export const UserProfileForm = () => {
+    if (!token) {
+        console.log("profile not generated because no token found")
+        return (null)
+    }
+    const user = decode(token);
+    if (!user || !user.userEmail) {
+        console.log("profile not generated because userEmail not in token")
+        return (null)
+    }
+
+    return (
+        <UserProfileFormWithUser user={user} />
+    )
+}
+
+const UserProfileFormWithUser = ({ user }) => {
+    let history = useHistory();
+    const [updateUser,
+        { loading: mutationLoading, error: mutationError, data: mutationData }] = useMutation(gql`
+    mutation ($email: String!, $userName: String!, $biography: String){
+        UpdateUser(email: $email, userName: $userName, biography: $biography) {
+            email,
+            userName,
+            biography
+        }  
+    }
+    `);
+
+    const { loading, error, data } = useQuery(gql`
+    query UserQuery($email: String!) {
+      User(email: $email) {
+        userName,
+        biography,
+        email
+      }
+    }
+    `, {
+        variables: { email: user.userEmail }
+    })
+
+    if (loading || error || !data.User || !data.User.length) {
+        if (error) {
+            console.log(error)
+            return (null)
+        } else if (loading) {
+            user = { loading: true }
+            return <CircularProgress />
+        } else {
+            user = { notFound: true }
+            console.log("user has not been found in db")
+            return (null)
+        }
+    } else {
+        user = data.User[0]
+    }
+    console.log(user)
+
     return (
         <div style={{
             display: 'flex',
@@ -23,8 +89,8 @@ export const UserProfileForm = () => {
         }}>
             <Formik
                 initialValues={{
-                    userName: '',
-                    biography: '',
+                    userName: user.userName ? user.userName : '',
+                    biography: user.biography ? user.biography : '',
                 }}
                 validationSchema={Yup.object({
                     userName: Yup.string()
@@ -34,10 +100,23 @@ export const UserProfileForm = () => {
                         .max(120, 'Must be 120 characters or less'),
                 })}
                 onSubmit={(values, { setSubmitting }) => {
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
-                        setSubmitting(false);
-                    }, 400);
+                    updateUser({
+                        variables: {
+                            email: user.email,
+                            userName: values.userName,
+                            biography: values.biography,
+                        }
+                    });
+                    if (mutationLoading) {
+                        return <CircularProgress />
+                    }
+                    else if (mutationError) {
+                        console.log(mutationError)
+                        return <p>Error :(</p>
+                    } else {
+                        history.push('/profile');
+                    }
+                    setSubmitting(false)
                 }}
             >
                 <Form>
@@ -59,7 +138,7 @@ export const UserProfileForm = () => {
                             color="primary"
                             type="submit"
                         >
-                            <PublishIcon />
+                            <SaveIcon />
                         </Button>
                     </Box>
                 </Form>

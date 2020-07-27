@@ -36,6 +36,8 @@ function UserProfileGrid({ user, classes }) {
       user = { loading: true }
     } else {
       user = { notFound: true }
+      console.log("user has not been found in db")
+      return (null)
     }
   } else {
     user = data.User[0]
