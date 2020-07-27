@@ -2,30 +2,16 @@ import React from 'react'
 import { UserProvider } from './UserContext'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './AppRouter'
-import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import { orange } from '@material-ui/core/colors';
 import {
   CssBaseline,
-  Drawer,
   Box,
   AppBar,
-  List,
   Typography,
-  Divider,
-  IconButton,
   Container,
   Link as MUILink,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
 } from '@material-ui/core'
-import { Link } from 'react-router-dom'
-import {
-  ChevronLeft as ChevronLeftIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
-} from '@material-ui/icons'
 import { TopToolbar } from './components/Toolbar';
 
 function Copyright() {
@@ -49,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
   },
   toolbarIcon: {
     display: 'flex',
@@ -57,30 +42,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-end',
     padding: '0 8px',
     ...theme.mixins.toolbar,
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
-  },
-  title: {
-    flexGrow: 1,
   },
   drawerPaper: {
     position: 'relative',
@@ -118,16 +79,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
-  fixedHeight: {
-    height: 240,
-  },
   navLink: {
     textDecoration: 'none',
     color: 'inherit',
-  },
-  appBarImage: {
-    maxHeight: '75px',
-    paddingRight: '20px',
   },
   altProfilePicture: {
     color: theme.palette.getContrastText(orange[500]),
@@ -137,16 +91,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
   const classes = useStyles()
-  const [open, setOpen] = React.useState(true)
-
-  const handleDrawerClose = () => {
-    setOpen(false)
-  }
-
-  const handleDrawerOpen = () => {
-    setOpen(true)
-  }
-
 
   return (
     <Router>
@@ -154,49 +98,11 @@ export default function App() {
         <CssBaseline />
         <AppBar
           position="absolute"
-          className={clsx(classes.appBar, open && classes.appBarShift)}
         >
           <TopToolbar
-            open={open}
-            onChange={handleDrawerClose}
             classes={classes}
-            handleDrawerOpen={handleDrawerOpen}
           />
         </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            <Link to="/" className={classes.navLink}>
-              <ListItem button>
-                <ListItemIcon>
-                  <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-              </ListItem>
-            </Link>
-
-            <Link to="/users" className={classes.navLink}>
-              <ListItem button>
-                <ListItemIcon>
-                  <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Users" />
-              </ListItem>
-            </Link>
-          </List>
-          <Divider />
-        </Drawer>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
