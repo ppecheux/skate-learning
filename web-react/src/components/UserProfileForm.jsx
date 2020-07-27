@@ -114,7 +114,7 @@ const UserProfileFormWithUser = ({ user }) => {
                         console.log(mutationError)
                         return <p>Error :(</p>
                     } else {
-                        history.push('/profile');
+                        history.push('/profile'); // error potential memory leaks
                     }
                     setSubmitting(false)
                 }}
