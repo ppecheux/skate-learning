@@ -39,6 +39,7 @@
     "apollo-link-context": "^1.0.20",
     "cookie-parser": "^1.4.5",
     "formik": "^2.1.5",
+    "formik-material-ui": "^3.0.0-alpha.0",
     "google-auth-library": "^6.0.5",
     "graphql": "^15.3.0",
     "graphql-auth-directives": "^2.2.0",
