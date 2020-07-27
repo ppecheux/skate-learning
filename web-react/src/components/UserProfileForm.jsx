@@ -6,9 +6,11 @@ import {
 import {
     Button,
 } from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
-import PublishIcon from '@material-ui/icons/Publish';
-import InfoIcon from '@material-ui/icons/Info';
+import {
+    Person as PersonIcon,
+    Publish as PublishIcon,
+    Info as InfoIcon
+} from '@material-ui/icons'
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 
