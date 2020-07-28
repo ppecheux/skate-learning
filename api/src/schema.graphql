@@ -42,13 +42,32 @@ type Figure {
   aliases: [String]
 }
 
+type Trick {
+  name: String!
+  aliases: [String]
+  author: User @relation(name: "CREATED", direction: "IN")
+  tips: Tips @relation(name: "HELPS", direction: "IN")
+  reaquirements: [Requirement] @relation(name: "REQUIRE", direction: IN)
+}
+
+type Requirement {
+  trick: Trick @relation(name: "REQUIRE", direction: "OUT")
+  voters: [User] @relation(name: "VOTED", direction: "IN")
+}
+
+type Tips {
+  text: String!
+  author: User @relation(name: "CREATED", direction: "IN")
+  voters: [User] @relation(name: "VOTED", direction: "IN")
+}
+
 type Review {
   reviewId: ID!
   stars: Float
   text: String
   date: Date
   business: Business @relation(name: "REVIEWS", direction: "OUT")
-  user: User @relation(name: "WROTE", direction: "IN")
+  user: User @relation(name: "WROTE", direction: IN)
 }
 
 type Category {
