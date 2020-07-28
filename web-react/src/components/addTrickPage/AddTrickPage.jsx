@@ -1,6 +1,11 @@
 import * as React from 'react';
+import { useHistory } from "react-router-dom";
+import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag';
+
 import { Formik, Form, Field } from 'formik';
 import {
+    Typography,
     IconButton,
     Grid,
     Box,
@@ -16,7 +21,14 @@ import {
 import * as Yup from 'yup';
 
 
-export const AddTrickPage = () => {
+export const AddTrickPage = (props) => {
+    const [getExistingTrick, { loading, error, data }] = useLazyQuery(gql`
+query TrickQuery($name: String!) {
+Trick(name: $name){
+    name
+}
+}
+`)
     return (
         <Formik
             initialValues={{

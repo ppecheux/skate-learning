@@ -7,12 +7,13 @@ import GoogleBtn from './components/GoogleBtn'
 import { UserProfileForm } from './components/UserProfileForm'
 import { TricksPage } from './components/tricksPage/TricksPage'
 import { AddTrickPage } from './components/addTrickPage/AddTrickPage'
+import { RouteWithEmail } from './components/RouteWithEmail.tsx'
 
 function AppRouter({ classes }) {
     return (
         <Switch classes={classes}>
             <Route exact path="/" component={TricksPage} />
-            <Route exact path="/addTrick" component={AddTrickPage} />
+            <RouteWithEmail exact path="/addTrick" component={AddTrickPage} />
             <Route exact path="/businesses" component={UserProfile} />
             <Route exact path="/users" component={UserList} />
             <Route exact path="/profile" render={(classes) => <UserProfile classes={classes} />} />
