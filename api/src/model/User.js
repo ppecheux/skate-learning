@@ -24,7 +24,7 @@ const client = new ApolloClient({
 
 const GET_USER_COUNT_QUERY = gql`
 query UserQuery($email: String!) {
-  User(email: $email) {
+  User(email: $email, first:1) {
     count
   }
 }

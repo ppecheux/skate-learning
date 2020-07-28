@@ -31,7 +31,7 @@ function ProfilePictureOrLogin({ classes, token }) {
   const user = decode(token);
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
-      User(email: $email) {
+      User(email: $email, first:1) {
         profilePicture,
         given_name
       }

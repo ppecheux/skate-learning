@@ -54,7 +54,7 @@ const UserProfileFormWithUser = ({ user }) => {
 
     const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
-      User(email: $email) {
+      User(email: $email, first:1) {
         userName,
         biography,
         email
