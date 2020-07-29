@@ -1,8 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { decode } from 'jsonwebtoken'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import Cookies from 'universal-cookie';
 import gql from 'graphql-tag';
 import Box from '@material-ui/core/Box';
 import {
@@ -20,26 +18,7 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const cookies = new Cookies();
-const token = cookies.get('accessToken')
-
-export const UserProfileForm = () => {
-    if (!token) {
-        console.log("profile not generated because no token found")
-        return (null)
-    }
-    const user = decode(token);
-    if (!user || !user.userEmail) {
-        console.log("profile not generated because userEmail not in token")
-        return (null)
-    }
-
-    return (
-        <UserProfileFormWithUser user={user} />
-    )
-}
-
-const UserProfileFormWithUser = ({ user }) => {
+export default ({ email }) => {
     let history = useHistory();
     const [updateUser,
         { loading: mutationLoading, error: mutationError, data: mutationData }] = useMutation(gql`
@@ -61,9 +40,10 @@ const UserProfileFormWithUser = ({ user }) => {
       }
     }
     `, {
-        variables: { email: user.userEmail }
+        variables: { email: email }
     })
 
+    let user;
     if (loading || error || !data.User || !data.User.length) {
         if (error) {
             console.log(error)
