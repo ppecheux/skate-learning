@@ -9,6 +9,7 @@ type User {
   profilePicture: String
   biography:String
   userName:String
+  publications: [Publication] @relation(name: "CREATED", direction: OUT)
   reviews: [Review] @relation(name: "WROTE", direction: "OUT")
   avgStars: Float
     @cypher(
@@ -46,8 +47,13 @@ type Trick {
   name: String!
   aliases: [String]
   author: User @relation(name: "CREATED", direction: "IN")
-  tips: Tips @relation(name: "HELPS", direction: "IN")
+  tips: [Tip] @relation(name: "HELPS", direction: "IN")
   reaquirements: [Requirement] @relation(name: "REQUIRE", direction: IN)
+}
+
+type Publication{
+  media: String!
+  author: User @relation(name: "CREATED", direction: "IN")
 }
 
 type Requirement {
@@ -55,7 +61,7 @@ type Requirement {
   voters: [User] @relation(name: "VOTED", direction: "IN")
 }
 
-type Tips {
+type Tip {
   text: String!
   author: User @relation(name: "CREATED", direction: "IN")
   voters: [User] @relation(name: "VOTED", direction: "IN")
