@@ -4,10 +4,10 @@ import { Switch, Route } from "react-router-dom";
 import UserList from './components/UserList'
 import UserProfile from './components/UserProfile'
 import GoogleBtn from './components/GoogleBtn'
-import { UserProfileForm } from './components/UserProfileForm'
+import UserProfileForm from './components/UserProfileForm'
 import { TricksPage } from './components/tricksPage/TricksPage'
 import { AddTrickPage } from './components/addTrickPage/AddTrickPage'
-import { RouteWithEmail } from './components/RouteWithEmail.tsx'
+import { RouteWithEmail } from './components/RouteWithEmail'
 
 function AppRouter({ classes }) {
     return (
@@ -18,7 +18,7 @@ function AppRouter({ classes }) {
             <Route exact path="/users" component={UserList} />
             <Route exact path="/profile" render={(classes) => <UserProfile classes={classes} />} />
             <Route exact path="/login" component={GoogleBtn} />
-            <Route exact path="/editProfile" component={UserProfileForm} />
+            <RouteWithEmail exact path="/editProfile" component={UserProfileForm} />
         </Switch>
     );
 }
