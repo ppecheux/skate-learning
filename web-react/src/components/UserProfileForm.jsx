@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag';
@@ -20,16 +20,26 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default ({ email }) => {
     let history = useHistory();
+
     const [updateUser,
-        { loading: mutationLoading, error: mutationError, data: mutationData }] = useMutation(gql`
+        { error: mutationError, data: mutationData }] = useMutation(gql`
     mutation ($email: String!, $userName: String!, $biography: String){
         UpdateUser(email: $email, userName: $userName, biography: $biography) {
+            _id,
             email,
             userName,
             biography
         }  
     }
     `);
+
+    useEffect(() => {
+        if (mutationData) {
+            history.push('/profile');
+        } else if (mutationError) {
+            console.log(mutationError)
+        }
+    }, [mutationData, mutationError, history])
 
     const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
@@ -87,15 +97,6 @@ export default ({ email }) => {
                             biography: values.biography,
                         }
                     });
-                    if (mutationLoading) {
-                        return <CircularProgress />
-                    }
-                    else if (mutationError) {
-                        console.log(mutationError)
-                        return <p>Error :(</p>
-                    } else {
-                        history.push('/profile'); // error potential memory leaks
-                    }
                     setSubmitting(false)
                 }}
             >

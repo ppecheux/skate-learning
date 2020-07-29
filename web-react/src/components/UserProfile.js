@@ -19,6 +19,7 @@ function UserProfileGrid({ user, classes }) {
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
       User(email: $email, first:1) {
+        _id,
         profilePicture,
         userName,
         biography
