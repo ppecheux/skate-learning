@@ -69,7 +69,6 @@ export default ({ email }) => {
     } else {
         user = data.User[0]
     }
-    console.log(user)
 
     return (
         <div style={{

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import Grid from '@material-ui/core/Grid';
+import {
+  Avatar,
+  Typography,
+  IconButton,
+  Grid
+} from '@material-ui/core'
 import { decode } from 'jsonwebtoken'
 import { useQuery } from '@apollo/react-hooks'
 import Cookies from 'universal-cookie';
