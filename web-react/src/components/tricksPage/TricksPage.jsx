@@ -1,20 +1,53 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
-import { Add } from '@material-ui/icons';
-import IconButton from '@material-ui/core/IconButton'
+import AddTrickCard from "./components/AddTrickCard";
+import { useQuery } from '@apollo/react-hooks'
+import TrickCard from './components/TrickCard'
+import { ListItem, List } from '@material-ui/core'
+import gql from 'graphql-tag';
 
+export function TricksPage() {
+  const { loading: loadTricks, error: errorTricks, data: { Trick: tricks } = {} } = useQuery(gql`
+query TrickQuery{
+  Trick{
+    name
+  }
+}
+    `)
+  if (errorTricks) {
+    console.log(errorTricks)
+    return (null)
+  } else {
 
-export const TricksPage = () => {
     return (
-        <Link to="/addTrick">
-            <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-            >
-                <Add />
-            </IconButton>
-        </Link>
+      <>
+        <TricksList
+          loadTricks={loadTricks}
+          tricks={tricks}
+        />
+        <AddTrickCard />
+      </>
     )
+  }
+}
+
+function TricksList({ loadingTricks, tricks, email, progress, loadingCircularProgress }) {
+  let items = null
+  if (loadingTricks) {
+    tricks = [...Array(10).keys()]
+    items = tricks.map(trick => <ListItem key={trick}><TrickCard loadingTricks /></ListItem>)
+  } else if (tricks) {
+    items = tricks.map(trick => <ListItem key={trick.name}>
+      <TrickCard
+        name={trick.name}
+        loadingCircularProgress={loadingCircularProgress}
+        email={email}
+        progress={progress} />
+    </ListItem>)
+  }
+  return (
+    <List>
+      {items}
+    </List>
+
+  )
 }
