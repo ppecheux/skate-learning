@@ -1,18 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../UserContext'
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag';
-import Cookies from 'universal-cookie';
 import { Toolbar, IconButton } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import { decode } from 'jsonwebtoken'
 import ProfilePictureMenu from './ProfilePictureMenu'
 
 import {
   FormatListBulleted as FormatListBulletedIcon,
 } from '@material-ui/icons'
 
-const cookies = new Cookies();
 
 const loginPicture =
   <Link to="/login">
@@ -27,8 +25,8 @@ const loginPicture =
   </Link>
 
 
-function ProfilePictureOrLogin({ classes, token }) {
-  const user = decode(token);
+function ProfilePictureOrLogin({ classes, email }) {
+
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
       User(email: $email, first:1) {
@@ -37,7 +35,7 @@ function ProfilePictureOrLogin({ classes, token }) {
       }
     }
     `, {
-    variables: { email: user.userEmail }
+    variables: { email }
   })
 
   if (loading || error || !data.User || !data.User.length) {
@@ -56,13 +54,15 @@ function ProfilePictureOrLogin({ classes, token }) {
 
 }
 
-export function TopToolbar({ classes, open, handleDrawerOpen }) {
-  const token = cookies.get('accessToken')
+export function TopToolbar({ classes }) {
+  const { user } = useContext(UserContext)
+  console.log(user)
+
   return (
     <Toolbar className={classes.toolbar}>
       <Link to="/">
         <IconButton
-          aria-label="account of current user"
+          aria-label="trick list"
           aria-controls="menu-appbar"
           aria-haspopup="true"
           color="inherit"
@@ -71,7 +71,7 @@ export function TopToolbar({ classes, open, handleDrawerOpen }) {
         </IconButton>
       </Link>
       {
-        token ? <ProfilePictureOrLogin classes={classes} token={token} /> : loginPicture
+        user.email ? <ProfilePictureOrLogin classes={classes} email={user.email} /> : loginPicture
       }
     </Toolbar>
 

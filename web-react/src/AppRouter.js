@@ -2,7 +2,7 @@ import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import UserList from './components/UserList'
 import UserProfile from './components/UserProfile'
-import GoogleBtn from './components/GoogleBtn'
+import GoogleButton from './components/GoogleButton'
 import UserProfileForm from './components/UserProfileForm'
 import { TricksPage } from './components/tricksPage/TricksPage'
 import { AddTrickPage } from './components/addTrickPage/AddTrickPage'
@@ -19,7 +19,7 @@ function AppRouter({ classes }) {
         exact path="/profile"
         render={(classes) => <UserProfile classes={classes} />}
       />
-      <Route exact path="/login" component={GoogleBtn} />
+      <Route exact path="/login" component={GoogleButton} />
       <RouteWithEmail exact path="/editProfile" component={UserProfileForm} />
     </Switch>
   )

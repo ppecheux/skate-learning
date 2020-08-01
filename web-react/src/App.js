@@ -106,13 +106,11 @@ export default function App() {
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
-            <UserProvider>
-              <AppRouter classes={classes} />
+            <AppRouter classes={classes} />
 
-              <Box pt={4}>
-                <Copyright />
-              </Box>
-            </UserProvider>
+            <Box pt={4}>
+              <Copyright />
+            </Box>
           </Container>
         </main>
       </div>
