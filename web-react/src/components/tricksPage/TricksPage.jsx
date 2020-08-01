@@ -1,5 +1,5 @@
 import React from 'react'
-import AddTrickCard from "./components/AddTrickCard";
+import AddTrickNameForm from "../addTrickPage/components/AddTrickNameForm";
 import { useQuery } from '@apollo/react-hooks'
 import TrickCard from './components/TrickCard'
 import { ListItem, List } from '@material-ui/core'
@@ -24,7 +24,7 @@ query TrickQuery{
           loadTricks={loadTricks}
           tricks={tricks}
         />
-        <AddTrickCard />
+        <AddTrickNameForm />
       </>
     )
   }

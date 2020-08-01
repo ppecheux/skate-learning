@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
+import { UserContext } from '../../../UserContext'
 import { useHistory } from 'react-router-dom'
 import { useMutation, useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
@@ -16,8 +17,9 @@ import {
 import * as yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-export default (props) => {
-  if (!props.email) {
+export default () => {
+  const { user } = useContext(UserContext)
+  if (!user.email) {
     return null
   }
   let history = useHistory();
@@ -73,12 +75,12 @@ export default (props) => {
             name: CreateTrick.name
           },
           author: {
-            email: props.email
+            email: user.email
           }
         }
       })
     }
-  }, [CreateTrick, addTrickAuthor, props.email])
+  }, [CreateTrick, addTrickAuthor, user.email])
 
   useEffect(() => {
     if (AddTrickAuthor) {

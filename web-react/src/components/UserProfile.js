@@ -6,17 +6,13 @@ import {
   IconButton,
   Grid
 } from '@material-ui/core'
-import { decode } from 'jsonwebtoken'
 import { useQuery } from '@apollo/react-hooks'
-import Cookies from 'universal-cookie';
 import gql from 'graphql-tag';
 import EditIcon from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
 
-const cookies = new Cookies();
-const token = cookies.get('accessToken')
 
-function UserProfileGrid({ user, classes }) {
+export default function UserProfile({ email, classes }) {
 
   const { loading, error, data } = useQuery(gql`
     query UserQuery($email: String!) {
@@ -28,9 +24,10 @@ function UserProfileGrid({ user, classes }) {
       }
     }
     `, {
-    variables: { email: user.userEmail }
+    variables: { email }
   })
   const avatarStyle = { height: null }
+  let user;
   if (loading || error || !data.User || !data.User.length) {
     if (error) {
       console.log(error)
@@ -104,20 +101,3 @@ function UserProfileGrid({ user, classes }) {
     </div>
   )
 }
-
-
-export default function UserPorfile({ classes }) {
-  if (!token) {
-    console.log("profile not generated because no token found")
-    return (null)
-  }
-  const user = decode(token);
-  if (!user || !user.userEmail) {
-    console.log("profile not generated because userEmail not in token")
-    return (null)
-  }
-
-  return (
-    <UserProfileGrid user={user} classes={classes} />
-  )
-} 

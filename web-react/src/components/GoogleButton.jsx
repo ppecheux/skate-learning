@@ -9,7 +9,7 @@ import { useHistory } from 'react-router-dom'
 
 const cookies = new Cookies();
 
-export default function GoogleButton({ referer }) {
+export default function GoogleButton(props) {
   const { user, setUser } = useContext(UserContext)
   let history = useHistory();
 
@@ -45,16 +45,18 @@ export default function GoogleButton({ referer }) {
           { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
         const userToken = decode(newUser.data.signInGoogle.accessToken)
         setUser({ ...user, email: userToken.userEmail })
-        history.push(referer || '/')
+        const referrer = (props && props.location && props.location.state)
+          ? props.location.state.referrer
+          : null
+        history.push(referrer || '/')
       } else {
         console.log(newUser)
       }
     }
   };
 
-  function onFailure(e) {
-    e.preventDefault()
-    alert("Failed to login")
+  function onFailure({ error, details }) {
+    alert(error + JSON.stringify(details))
   }
 
   return (

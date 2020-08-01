@@ -13,12 +13,11 @@ function AppRouter({ classes }) {
     <Switch classes={classes}>
       <Route exact path="/" component={TricksPage} />
       <RouteWithEmail exact path="/addTrick" component={AddTrickPage} />
-      <Route exact path="/businesses" component={UserProfile} />
       <Route exact path="/users" component={UserList} />
-      <Route
+      <RouteWithEmail
         exact path="/profile"
-        render={(classes) => <UserProfile classes={classes} />}
-      />
+        classes={classes}
+        component={UserProfile} />
       <Route exact path="/login" component={GoogleButton} />
       <RouteWithEmail exact path="/editProfile" component={UserProfileForm} />
     </Switch>

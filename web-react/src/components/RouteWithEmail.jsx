@@ -25,7 +25,7 @@ export const RouteWithEmail = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) =>
         email ? (
-          <Component {...{ ...props, email }} />
+          <Component {...{ ...rest, ...props, email }} />
         ) : (
             <Redirect
               to={{ pathname: '/login', state: { referer: props.location } }}

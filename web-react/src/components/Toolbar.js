@@ -56,7 +56,6 @@ function ProfilePictureOrLogin({ classes, email }) {
 
 export function TopToolbar({ classes }) {
   const { user } = useContext(UserContext)
-  console.log(user)
 
   return (
     <Toolbar className={classes.toolbar}>
