@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import AddTrickNameForm from "../addTrickPage/components/AddTrickNameForm";
 import { useQuery } from '@apollo/react-hooks'
 import TrickCard from './components/TrickCard'
 import { ListItem, List } from '@material-ui/core'
 import gql from 'graphql-tag';
+import { UserContext } from "../../UserContext";
 
 export function TricksPage() {
   const { loading: loadTricks, error: errorTricks, data: { Trick: tricks } = {} } = useQuery(gql`
@@ -30,17 +31,19 @@ query TrickQuery{
   }
 }
 
-function TricksList({ loadingTricks, tricks, email, progress, loadingCircularProgress }) {
+function TricksList({ loadingTricks, tricks, progress, loadingCircularProgress }) {
   let items = null
+  const { user } = useContext(UserContext)
   if (loadingTricks) {
     tricks = [...Array(10).keys()]
     items = tricks.map(trick => <ListItem key={trick}><TrickCard loadingTricks /></ListItem>)
   } else if (tricks) {
-    items = tricks.map(trick => <ListItem key={trick.name}>
+    const names = new Set(tricks.map(trick => trick.name))
+    items = [...names].map(name => <ListItem key={name}>
       <TrickCard
-        name={trick.name}
+        name={name}
         loadingCircularProgress={loadingCircularProgress}
-        email={email}
+        email={user.email}
         progress={progress} />
     </ListItem>)
   }
