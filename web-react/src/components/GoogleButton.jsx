@@ -12,9 +12,14 @@ const cookies = new Cookies();
 export default function GoogleButton(props) {
   const { user, setUser } = useContext(UserContext)
   let history = useHistory();
+  const referrer = (props && props.location && props.location.state)
+    ? props.location.state.referrer
+    : null
+
+
 
   const login = async (response) => {
-    if (response.accessToken !== undefined) {
+    if (response.accessToken || response.id_token) {
       const newUser = await client.query({
         query: gql`
                 query getSignIn($tokenId: String!){
@@ -29,7 +34,7 @@ export default function GoogleButton(props) {
                 `
         ,
         variables: {
-          tokenId: response.getAuthResponse().id_token
+          tokenId: response.id_token || response.getAuthResponse().id_token
         }
       })
       if (newUser.data.signInGoogle.success) {
@@ -45,15 +50,20 @@ export default function GoogleButton(props) {
           { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
         const userToken = decode(newUser.data.signInGoogle.accessToken)
         setUser({ ...user, email: userToken.userEmail })
-        const referrer = (props && props.location && props.location.state)
-          ? props.location.state.referrer
-          : null
+
         history.push(referrer || '/')
       } else {
         console.log(newUser)
       }
     }
   };
+
+  const google_hash = window.location.hash;
+  if (google_hash) {
+    const id_token = google_hash.match(/(?=id_token=)([^&]+)/)[0].split("=")[1];
+    console.log(id_token)
+    login({ id_token })
+  }
 
   function onFailure({ error, details }) {
     alert(error + JSON.stringify(details))
@@ -67,6 +77,8 @@ export default function GoogleButton(props) {
       onFailure={onFailure}
       cookiePolicy={'single_host_origin'}
       responseType='code,token'
+      uxMode='redirect'
+      isSignedIn={false}
     />
   )
 }
