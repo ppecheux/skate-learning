@@ -65,6 +65,7 @@ type Tip {
   text: String!
   author: User @relation(name: "CREATED", direction: "IN")
   voters: [User] @relation(name: "VOTED", direction: "IN")
+  trick: Trick @relation(name: "HELPS", direction: OUT)
 }
 
 type Review {

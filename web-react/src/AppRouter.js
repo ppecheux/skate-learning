@@ -7,6 +7,7 @@ import UserProfileForm from './components/UserProfileForm'
 import { TricksPage } from './components/tricksPage/TricksPage'
 import { AddTrickPage } from './components/addTrickPage/AddTrickPage'
 import { RouteWithEmail } from './components/RouteWithEmail'
+import TrickPage from './components/trickPage/TrickPage'
 
 function AppRouter({ classes }) {
   return (
@@ -19,6 +20,7 @@ function AppRouter({ classes }) {
         classes={classes}
         component={UserProfile} />
       <Route exact path="/login" component={GoogleButton} />
+      <Route exact path="/trick/:name" component={TrickPage} />
       <RouteWithEmail exact path="/editProfile" component={UserProfileForm} />
     </Switch>
   )

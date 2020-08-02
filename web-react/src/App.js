@@ -1,5 +1,4 @@
 import React from 'react'
-import { UserProvider } from './UserContext'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './AppRouter'
 import { makeStyles } from '@material-ui/core/styles'

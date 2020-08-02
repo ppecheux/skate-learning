@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import { Done, PlayArrow } from "@material-ui/icons";
 import Skeleton from "@material-ui/lab/Skeleton";
+import { Link } from "react-router-dom";
 
 
 export default function TrickCard({
@@ -20,31 +21,33 @@ export default function TrickCard({
   loadingCircularProgress
 }) {
   return (
-    <Card>
-      <CardContent>
-        <Grid container justify="space-between" alignItems="center">
-          <Grid item>
-            {loadingTricks ? (
-              <Skeleton variant="text">
-                <Typography >
-                  {"x".repeat(20)}
-                </Typography>
-              </Skeleton>
-            ) : (
-                <Typography >{name}</Typography>
+    <Link to={"/trick/" + name}>
+      <Card>
+        <CardContent>
+          <Grid container justify="space-between" alignItems="center">
+            <Grid item>
+              {loadingTricks ? (
+                <Skeleton variant="text">
+                  <Typography >
+                    {"x".repeat(20)}
+                  </Typography>
+                </Skeleton>
+              ) : (
+                  <Typography >{name}</Typography>
+                )}
+            </Grid>
+            <Grid item>
+              {email && (
+                <TrickCircularProgress
+                  progress={progress}
+                  loading={loadingCircularProgress}
+                />
               )}
+            </Grid>
           </Grid>
-          <Grid item>
-            {email && (
-              <TrickCircularProgress
-                progress={progress}
-                loading={loadingCircularProgress}
-              />
-            )}
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }
 
