@@ -19,7 +19,7 @@ export default function UserProfile({ email, classes }) {
       User(email: $email, first:1) {
         _id,
         profilePicture,
-        userName,
+        name,
         biography
       }
     }
@@ -48,7 +48,7 @@ export default function UserProfile({ email, classes }) {
         <Grid item xs>
           {
             user.profilePicture
-              ? <Avatar alt={user.userName ? user.userName : "n"} src={user.profilePicture} style={avatarStyle} />
+              ? <Avatar alt={user.name ? user.name : "n"} src={user.profilePicture} style={avatarStyle} />
               : <Skeleton variant="circle"><Avatar /></Skeleton>
 
           }
@@ -62,8 +62,8 @@ export default function UserProfile({ email, classes }) {
             className={classes.title}
           >
             {
-              user.userName
-                ? user.userName
+              user.name
+                ? user.name
                 : user.loading
                   ? <Skeleton />
                   : "new rider"

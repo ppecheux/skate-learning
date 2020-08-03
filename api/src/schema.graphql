@@ -8,7 +8,8 @@ type User {
   count:Int
   profilePicture: String
   biography:String
-  userName:String
+  name:String
+  reputation:Int
   publications: [Publication] @relation(name: "CREATED", direction: OUT)
   reviews: [Review] @relation(name: "WROTE", direction: "OUT")
   avgStars: Float

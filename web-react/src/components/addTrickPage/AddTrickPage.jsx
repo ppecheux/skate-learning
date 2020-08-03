@@ -93,7 +93,7 @@ export const AddTrickPage = (props) => {
     return (
       <Formik
         initialValues={{
-          userName: '',
+          name: '',
           biography: '',
         }}
         validationSchema={yup.object({
