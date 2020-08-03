@@ -85,7 +85,7 @@ export default () => {
   useEffect(() => {
     if (AddTrickAuthor) {
       console.log(AddTrickAuthor)
-      history.push('tricks/' + encodeURIComponent(AddTrickAuthor.to.name))
+      history.push('trick/' + encodeURIComponent(AddTrickAuthor.to.name))
     }
   }, [AddTrickAuthor, history])
 

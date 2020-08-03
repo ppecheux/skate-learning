@@ -1,26 +1,45 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { Typography, CircularProgress } from '@material-ui/core'
 import AddTipToTrick from './components/AddTipToTrick'
 import AddTrickNameForm from '../addTrickPage/components/AddTrickNameForm'
 import { Alert, AlertTitle } from '@material-ui/lab';
+import TipCardPresentation from './components/TipCardPresentation'
 
 export default function TrickPage({ match: { params: { name } } }) {
-  const { error, loading, data: { Trick: tricks } = {} } = useQuery(gql`
+  const [countCreated, setCountCreated] = useState(0)
+  const { error, loading, data: { Trick: tricks } = {}, refetch } = useQuery(gql`
   query Trick($name: String!){
   Trick(name:$name, first:1){
     author{
-      userName
+      name
     },
     tips{
+      author{
+        reputation
+        _id
+        name
+        profilePicture
+      }
       text
+      voters{
+        _id
+      }
     }
   }
 }
   `, {
-    variables: { name }
+    variables: { name },
+    notifyOnNetworkStatusChange: true
   })
+
+  useEffect(() => {
+    if (countCreated) {
+      setCountCreated(0)
+      refetch()
+    }
+  }, [refetch, countCreated])
 
   const titletrick = <Typography variant='h1'>{name}</Typography>
 
@@ -38,17 +57,30 @@ export default function TrickPage({ match: { params: { name } } }) {
     }
   } else {
     return (
-
-
       tricks.length ?
         <>
           {titletrick}
-          <AddTipToTrick />
+          {
+            tricks[0].tips
+            && tricks[0].tips.map(
+              (tip, idx) =>
+                <TipCardPresentation
+                  key={idx}
+                  author={tip.author}
+                  voters={tip.voters}
+                  tip={tip.text} />
+            )}
+          <AddTipToTrick
+            trickName={name}
+            countCreated={countCreated}
+            setCountCreated={setCountCreated} />
         </>
         :
         <>
           <Alert severity="warning">
-            <AlertTitle>{name} not found</AlertTitle>
+            <AlertTitle>
+              {name} not found
+              </AlertTitle>
   this trick is not on the website but you can add it
 </Alert>
           <AddTrickNameForm />

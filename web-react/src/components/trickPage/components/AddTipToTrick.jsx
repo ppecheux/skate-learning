@@ -16,7 +16,7 @@ import {
 } from '@material-ui/icons'
 import * as yup from 'yup'
 
-export default function AddTipToTrick({ trickName }) {
+export default function AddTipToTrick({ trickName, countCreated, setCountCreated }) {
   const { user } = useContext(UserContext)
   let history = useHistory();
 
@@ -26,7 +26,7 @@ export default function AddTipToTrick({ trickName }) {
   ] = useMutation(gql`
     mutation($text: String!) {
       CreateTip(text: $text) {
-        _id
+        text
       }
     }
   `)
@@ -41,7 +41,7 @@ export default function AddTipToTrick({ trickName }) {
       email
     }
     to {
-      _id
+      text
     }
   }
 }
@@ -55,7 +55,7 @@ export default function AddTipToTrick({ trickName }) {
 mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
   AddTipTrick(from: $tip, to: $trick) {
     from {
-      _id
+      text
     }
     to {
       name
@@ -76,7 +76,7 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
       addTipAuthor({
         variables: {
           tip: {
-            _id: CreateTip._id
+            text: CreateTip.text
           },
           author: {
             email: user.email
@@ -86,7 +86,7 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
       addTipTrick({
         variables: {
           tip: {
-            _id: CreateTip._id
+            text: CreateTip.text
           },
           trick: {
             name: trickName
@@ -99,7 +99,7 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
   useEffect(() => {
     if (AddTipTrick && AddTipAuthor) {
       console.log(AddTipTrick)
-      //refresh tips in trick page
+      setCountCreated(countCreated + 1)
     }
   }, [AddTipTrick, AddTipAuthor, history])
 
@@ -108,46 +108,43 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
       ?
       <Formik
         initialValues={{
-          text: '',
+          tip: ''
         }}
         validationSchema={yup.object({
-          name: yup
+          tip: yup
             .string()
             .max(1000)
-            .required(),
+            .required()
         })}
         onSubmit={(values, { setSubmitting }) => {
-          values.text && createTip({
-            variables: { text: values.text }
+          console.log(values)
+          values.tip && createTip({
+            variables: { text: values.tip }
           })
           setSubmitting(false)
         }}
       >
-        <Grid container justify="center">
-          <Form>
-            <Grid container alignItems="center" justify="center">
-              <Grid item>
-                <label htmlFor="tip">
-                  <Assignment />
-                </label>
-              </Grid>
-              <Grid item>
-                <Field
-                  component={TextField}
-                  name="tip"
-                  type="text"
-                  multiline={true}
-                  rows="3"
-                  variant="outlined"
-                  margin="normal"
-                />
-              </Grid>
-            </Grid>
-            <IconButton color="primary" type="submit">
-              <Save />
-            </IconButton>
-          </Form>
-        </Grid>
+        <Form>
+
+          <label htmlFor="tip">
+            <Assignment />
+          </label>
+
+          <Field
+            component={TextField}
+            name="tip"
+            type="text"
+            multiline={true}
+            rows="3"
+            variant="outlined"
+            margin="normal"
+          />
+
+
+          <IconButton type="submit">
+            <Save />
+          </IconButton>
+        </Form>
       </Formik>
       : null
   )
