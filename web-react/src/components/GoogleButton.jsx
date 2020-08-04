@@ -9,12 +9,9 @@ import { useHistory } from 'react-router-dom'
 
 const cookies = new Cookies();
 
-export default function GoogleButton(props) {
+export default function GoogleButton() {
   const { user, setUser } = useContext(UserContext)
   let history = useHistory();
-  const referrer = (props && props.location && props.location.state)
-    ? props.location.state.referrer
-    : null
 
   const login = async (response) => {
     if (response.accessToken || response.id_token) {
@@ -48,8 +45,13 @@ export default function GoogleButton(props) {
           { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
         const userToken = decode(newUser.data.signInGoogle.accessToken)
         setUser({ ...user, id: userToken.userId })
-
-        history.push(referrer || '/')
+        const referrer = localStorage.getItem('referrer')
+        if (referrer) {
+          localStorage.removeItem('referrer')
+          history.push(referrer)
+        } else {
+          history.push('/')
+        }
       } else {
         console.log(newUser)
       }

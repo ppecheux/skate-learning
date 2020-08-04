@@ -38,6 +38,7 @@ export default () => {
   ] = useMutation(gql`
     mutation($name: String!) {
       CreateTrick(name: $name) {
+        _id
         name
       }
     }

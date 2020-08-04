@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { Skeleton } from '@material-ui/lab'
 import { Avatar, IconButton, Badge, Typography, Grid } from '@material-ui/core'
-import { Edit, FavoriteBorder, Favorite } from '@material-ui/icons'
+import { Edit } from '@material-ui/icons'
 import { UserContext } from '../../../UserContext'
 import { Link } from 'react-router-dom'
+import { VoteHeart } from './VoteHeart'
 
-export default function TipCardPresentation({ tip, voters, loading, author }) {
+export default function TipCardPresentation({ tip: { id, text, voters, loading, author } }) {
   const { user } = useContext(UserContext)
-  const { id, profilePicture, reputation, name } = author || {}
-  console.log(author)
   let tipText = (
     <Skeleton>
       <Typography >
@@ -17,19 +16,8 @@ export default function TipCardPresentation({ tip, voters, loading, author }) {
     </Skeleton>
   )
 
-  let authorPicture
-  if (id) {
-    authorPicture = (id === user.id)
-      ?
-      <IconButton>
-        <Edit />
-      </IconButton>
-      :
-      <AuthorSignature profilePicture={profilePicture} reputation={reputation} name={name} />
-  }
-
-  if (tip) {
-    tipText = <Typography >{tip}</Typography>
+  if (text) {
+    tipText = <Typography >{text}</Typography>
   }
 
   return (
@@ -45,12 +33,11 @@ export default function TipCardPresentation({ tip, voters, loading, author }) {
         justify="space-between"
         alignItems="center">
         <Grid item>
-          <VoteHeart voters={voters} user={user} />
-
+          <VoteHeart voters={voters} user={user} id={id} />
         </Grid>
         <Grid item>
 
-          {authorPicture}
+          <AuthorSignature author={author} user={user} />
         </Grid>
 
       </Grid>
@@ -58,37 +45,20 @@ export default function TipCardPresentation({ tip, voters, loading, author }) {
   )
 }
 
-function VoteHeart({ voters, user }) {
-  const [voteCount, setVoteCount] = useState(voters.length || 0)
-  const [voted, setVoted] = useState(voters ? voters.filter(voter => voter === user._id).length : false)
 
-  function handleClick() {
-    if (voted) {
-      setVoteCount(voteCount - 1)
-      //mutation for the add relation 
-    } else {
-      setVoteCount(voteCount + 1)
-      //mutation for the remove relation 
-    }
-    setVoted(!voted)
 
-  }
-
-  return (
-    <IconButton onClick={handleClick} >
-      <Badge badgeContent={voteCount}>
-        {voted ? <Favorite /> : <FavoriteBorder />}
-      </Badge>
-    </IconButton>
-  )
-}
-
-function AuthorSignature({ profilePicture, reputation, name }) {
+function AuthorSignature({ author: { profilePicture, reputation, name, id }, user }) {
 
   return (
     <Grid container >
       <Grid item>
-
+        {
+          (user && user.id === id)
+          &&
+          <IconButton>
+            <Edit />
+          </IconButton>
+        }
         <Link>
           <Badge color="secondary" badgeContent={reputation || 0} anchorOrigin={{
             vertical: 'bottom',

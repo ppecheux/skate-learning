@@ -16,6 +16,7 @@ export default function TrickPage({ match: { params: { name } } }) {
       name
     },
     tips{
+      id
       author{
         reputation
         id
@@ -66,9 +67,7 @@ export default function TrickPage({ match: { params: { name } } }) {
               (tip, idx) =>
                 <TipCardPresentation
                   key={idx}
-                  author={tip.author}
-                  voters={tip.voters}
-                  tip={tip.text} />
+                  tip={tip} />
             )}
           <AddTipToTrick
             trickName={name}
