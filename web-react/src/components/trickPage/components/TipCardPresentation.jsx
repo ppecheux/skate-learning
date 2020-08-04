@@ -59,7 +59,7 @@ function AuthorSignature({ author: { profilePicture, reputation, name, id }, use
             <Edit />
           </IconButton>
         }
-        <Link>
+        <Link to={"/profile/" + id}>
           <Badge color="secondary" badgeContent={reputation || 0} anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'right',

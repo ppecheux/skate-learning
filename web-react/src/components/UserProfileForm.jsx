@@ -34,7 +34,8 @@ export default ({ userId }) => {
 
   useEffect(() => {
     if (mutationData) {
-      history.push('/profile');
+      console.log(mutationData)
+      history.push('/profile/' + userId);
     } else if (mutationError) {
       console.log(mutationError)
     }

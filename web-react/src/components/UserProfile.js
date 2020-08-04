@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom';
 import {
   Avatar,
   Typography,
@@ -10,21 +10,22 @@ import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag';
 import EditIcon from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { UserContext } from '../UserContext'
 
-
-export default function UserProfile({ userId, classes }) {
-
+export default function UserProfile({ match: { params: { id } } }) {
+  const { user: currentUser } = useContext(UserContext)
+  let history = useHistory()
   const { loading, error, data } = useQuery(gql`
     query UserQuery($id: ID!) {
       User(id: $id, first:1) {
-        _id,
+        id,
         profilePicture,
         name,
         biography
       }
     }
     `, {
-    variables: { id: userId }
+    variables: { id }
   })
   const avatarStyle = { height: null }
   let user;
@@ -35,12 +36,16 @@ export default function UserProfile({ userId, classes }) {
     } else if (loading) {
       user = { loading: true }
     } else {
-      user = { notFound: true }
       console.log("user has not been found in db")
-      return (null)
+      history.push("/profile/" + currentUser.id)
     }
   } else {
     user = data.User[0]
+  }
+
+  if (!user) {
+    history.push("/error/404 User not found");
+    return null
   }
   return (
     <div>
@@ -49,17 +54,15 @@ export default function UserProfile({ userId, classes }) {
           {
             user.loading
               ? <Skeleton variant="circle"><Avatar /></Skeleton>
-              : <Avatar alt={user.name} src={user.profilePicture} style={avatarStyle} />
+              : <Avatar alt={user.name.toUpperCase()} src={user.profilePicture || "useAlt"} style={avatarStyle} />
 
           }
         </Grid>
         <Grid item xs>
           <Typography
-            component="h3"
-            variant="h6"
+            variant="h4"
             color="inherit"
             noWrap
-            className={classes.title}
           >
             {
               user.name
@@ -71,24 +74,26 @@ export default function UserProfile({ userId, classes }) {
             }
           </Typography>
         </Grid>
-        <Grid item xs>
-          <Link to="/editProfile">
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <EditIcon />
-            </IconButton>
-          </Link>
-        </Grid>
+        {
+          (currentUser.id === id)
+          &&
+          <Grid item xs>
+            <Link to="/editProfile">
+              <IconButton
+                aria-label="edit profile"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <EditIcon />
+              </IconButton>
+            </Link>
+          </Grid>
+        }
       </Grid>
       <Typography
-        variant="h6"
         color="inherit"
         noWrap
-        className={classes.title}
       >
         {
           user.biography
@@ -100,4 +105,5 @@ export default function UserProfile({ userId, classes }) {
       </Typography>
     </div>
   )
+
 }

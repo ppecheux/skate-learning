@@ -31,7 +31,8 @@ function ProfilePictureOrLogin({ classes, id }) {
     query UserQuery($id: ID!) {
       User(id: $id, first:1) {
         profilePicture,
-        name
+        name,
+        id
       }
     }
     `, {

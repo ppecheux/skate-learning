@@ -26,7 +26,7 @@ export default function ProfilePictureMenu({ classes, user }) {
 
   return (
     <div>
-      <Avatar alt={user.name} src={user.profilePicture || "use_alt"} className={classes.orange} onClick={handleClick} />
+      <Avatar alt={user.name.toUpperCase()} src={user.profilePicture || "use_alt"} className={classes.orange} onClick={handleClick} />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -35,7 +35,7 @@ export default function ProfilePictureMenu({ classes, user }) {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>
-          <Link to="/profile">
+          <Link to={"/profile/" + user.id}>
             <ListItemIcon>
               <FaceIcon />
             </ListItemIcon>

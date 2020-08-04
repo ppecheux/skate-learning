@@ -8,6 +8,7 @@ import { TricksPage } from './components/tricksPage/TricksPage'
 import { AddTrickPage } from './components/addTrickPage/AddTrickPage'
 import { RouteWithId } from './components/RouteWithId'
 import TrickPage from './components/trickPage/TrickPage'
+import ErrorPage from './components/ErrorPage'
 
 function AppRouter({ classes }) {
   return (
@@ -15,13 +16,14 @@ function AppRouter({ classes }) {
       <Route exact path="/" component={TricksPage} />
       <RouteWithId exact path="/addTrick" component={AddTrickPage} />
       <Route exact path="/users" component={UserList} />
-      <RouteWithId
-        exact path="/profile"
+      <Route
+        exact path="/profile/:id"
         classes={classes}
         component={UserProfile} />
       <Route exact path="/login" component={GoogleButton} />
       <Route exact path="/trick/:name" component={TrickPage} />
       <RouteWithId exact path="/editProfile" component={UserProfileForm} />
+      <Route render={() => <ErrorPage code="404" message="page not found" />} />
     </Switch>
   )
 }
