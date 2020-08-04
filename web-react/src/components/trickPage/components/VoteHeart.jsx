@@ -13,7 +13,7 @@ export function VoteHeart({ voters, user, id }) {
 
   let [
     addTipVoters,
-    { error: aerror, loading: aloading, data: { AddTipVoters } = {} }
+    { error: aerror, loading: aloading }
   ] = useMutation(gql`
         mutation AddTipVoters($user: _UserInput!,$tip: _TipInput!){
           AddTipVoters(from:$user, to:$tip){
@@ -35,7 +35,7 @@ export function VoteHeart({ voters, user, id }) {
 
   let [
     removeTipVoters,
-    { error: rerror, loading: rloading, data: { RemoveTipVoters } = {} }
+    { error: rerror, loading: rloading }
   ] = useMutation(gql`
       mutation RemoveTipVoters($user: _UserInput!,$tip: _TipInput!){
         RemoveTipVoters(from:$user, to:$tip){
