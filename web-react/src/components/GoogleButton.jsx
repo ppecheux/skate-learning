@@ -16,8 +16,6 @@ export default function GoogleButton(props) {
     ? props.location.state.referrer
     : null
 
-
-
   const login = async (response) => {
     if (response.accessToken || response.id_token) {
       const newUser = await client.query({
@@ -49,7 +47,7 @@ export default function GoogleButton(props) {
           newUser.data.signInGoogle.accessToken,
           { expires: new Date(Date.now() + 7 * 24 * 60 * 60) });
         const userToken = decode(newUser.data.signInGoogle.accessToken)
-        setUser({ ...user, email: userToken.userEmail })
+        setUser({ ...user, id: userToken.userId })
 
         history.push(referrer || '/')
       } else {
@@ -61,7 +59,6 @@ export default function GoogleButton(props) {
   const google_hash = window.location.hash;
   if (google_hash) {
     const id_token = google_hash.match(/(?=id_token=)([^&]+)/)[0].split("=")[1];
-    console.log(id_token)
     login({ id_token })
   }
 
@@ -79,6 +76,7 @@ export default function GoogleButton(props) {
       responseType='code,token'
       uxMode='redirect'
       isSignedIn={false}
+      scope={"profile email"}
     />
   )
 }

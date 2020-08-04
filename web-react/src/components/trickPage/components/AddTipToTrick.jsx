@@ -26,7 +26,7 @@ export default function AddTipToTrick({ trickName, countCreated, setCountCreated
   ] = useMutation(gql`
     mutation($text: String!) {
       CreateTip(text: $text) {
-        text
+        id
       }
     }
   `)
@@ -38,10 +38,10 @@ export default function AddTipToTrick({ trickName, countCreated, setCountCreated
   mutation AddTipAuthor($tip: _TipInput!, $author: _UserInput!) {
   AddTipAuthor(from: $author, to: $tip) {
     from {
-      email
+      id
     }
     to {
-      text
+      id
     }
   }
 }
@@ -55,7 +55,7 @@ export default function AddTipToTrick({ trickName, countCreated, setCountCreated
 mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
   AddTipTrick(from: $tip, to: $trick) {
     from {
-      text
+      id
     }
     to {
       name
@@ -76,17 +76,17 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
       addTipAuthor({
         variables: {
           tip: {
-            text: CreateTip.text
+            id: CreateTip.id
           },
           author: {
-            email: user.email
+            id: user.id
           }
         }
       })
       addTipTrick({
         variables: {
           tip: {
-            text: CreateTip.text
+            id: CreateTip.id
           },
           trick: {
             name: trickName
@@ -94,7 +94,7 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
         }
       })
     }
-  }, [CreateTip, addTipTrick, addTipAuthor, user.email, trickName])
+  }, [CreateTip, addTipTrick, addTipAuthor, user.id, trickName])
 
   useEffect(() => {
     if (AddTipTrick && AddTipAuthor) {
@@ -104,7 +104,7 @@ mutation AddTipTrick($trick: _TrickInput!, $tip: _TipInput!) {
   }, [AddTipTrick, AddTipAuthor, history])
 
   return (
-    user.email
+    user.id
       ?
       <Formik
         initialValues={{

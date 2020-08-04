@@ -19,7 +19,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 
 export default () => {
   const { user } = useContext(UserContext)
-  if (!user.email) {
+  if (!user.id) {
     return null
   }
   let history = useHistory();
@@ -50,7 +50,7 @@ export default () => {
   mutation AddTrickAuthor($trick: _TrickInput!, $author: _UserInput!) {
   AddTrickAuthor(from: $author, to: $trick) {
     from {
-      email
+      id
     }
     to {
       name
@@ -75,12 +75,12 @@ export default () => {
             name: CreateTrick.name
           },
           author: {
-            email: user.email
+            id: user.id
           }
         }
       })
     }
-  }, [CreateTrick, addTrickAuthor, user.email])
+  }, [CreateTrick, addTrickAuthor, user.id])
 
   useEffect(() => {
     if (AddTrickAuthor) {

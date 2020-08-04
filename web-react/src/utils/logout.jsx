@@ -7,6 +7,6 @@ export default function logout(setUser) {
   for (const cookie of ["accessToken", "refreshToken"]) {
     cookies.remove(cookie)
   }
-  setUser({ email: '', reputation: 0 });
+  setUser({ email: '', reputation: 0, id: null });
   return <Redirect to="/" />
 }

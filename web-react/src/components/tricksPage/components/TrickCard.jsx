@@ -17,7 +17,7 @@ export default function TrickCard({
   name,
   progress,
   loadingTricks,
-  email,
+  userId,
   loadingCircularProgress
 }) {
   return (
@@ -37,7 +37,7 @@ export default function TrickCard({
                 )}
             </Grid>
             <Grid item>
-              {email && (
+              {userId && (
                 <TrickCircularProgress
                   progress={progress}
                   loading={loadingCircularProgress}

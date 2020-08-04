@@ -21,7 +21,7 @@ import {
 import * as yup from 'yup'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-export const AddTrickPage = (props) => {
+export const AddTrickPage = ({ userId: id }) => {
   let history = useHistory();
 
   const { loading, error, data: { Trick: tricks } = {} } = useQuery(gql`
@@ -50,7 +50,7 @@ export const AddTrickPage = (props) => {
   mutation AddTrickAuthor($trick: _TrickInput!, $author: _UserInput!) {
   AddTrickAuthor(from: $author, to: $trick) {
     from {
-      email
+      id
     }
     to {
       name
@@ -68,12 +68,12 @@ export const AddTrickPage = (props) => {
             name: CreateTrick.name
           },
           author: {
-            email: props.email
+            id: id
           }
         }
       })
     }
-  }, [CreateTrick, addTrickAuthor, props.email])
+  }, [CreateTrick, addTrickAuthor, id])
 
   useEffect(() => {
     if (AddTrickAuthor) {

@@ -18,13 +18,13 @@ export default function TrickPage({ match: { params: { name } } }) {
     tips{
       author{
         reputation
-        _id
+        id
         name
         profilePicture
       }
       text
       voters{
-        _id
+        id
       }
     }
   }

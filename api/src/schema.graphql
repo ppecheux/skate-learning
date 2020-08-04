@@ -2,7 +2,8 @@ directive @hasRole(roles: [Role]) on OBJECT | FIELD_DEFINITION
 directive @isAuthenticated on OBJECT | FIELD_DEFINITION
 
 type User {
-  email: String! 
+  id: ID!
+  email: String
   given_name: String
   family_name:String
   count:Int
@@ -24,25 +25,6 @@ type User {
     )
 }
 
-type Business {
-  businessId: ID!
-  name: String!
-  address: String
-  city: String
-  state: String
-  location: Point
-  avgStars: Float
-    @cypher(
-      statement: "MATCH (this)<-[:REVIEWS]-(r:Review) RETURN coalesce(avg(r.stars),0.0)"
-    )
-  reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
-  categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
-}
-
-type Figure {
-  name: String!
-  aliases: [String]
-}
 
 type Trick {
   name: String!
@@ -63,10 +45,27 @@ type Requirement {
 }
 
 type Tip {
-  text: String!
+  id: ID!
+  text: String
   author: User @relation(name: "CREATED", direction: "IN")
   voters: [User] @relation(name: "VOTED", direction: "IN")
   trick: Trick @relation(name: "HELPS", direction: OUT)
+}
+
+
+type Business {
+  businessId: ID!
+  name: String!
+  address: String
+  city: String
+  state: String
+  location: Point
+  avgStars: Float
+    @cypher(
+      statement: "MATCH (this)<-[:REVIEWS]-(r:Review) RETURN coalesce(avg(r.stars),0.0)"
+    )
+  reviews: [Review] @relation(name: "REVIEWS", direction: "IN")
+  categories: [Category] @relation(name: "IN_CATEGORY", direction: "OUT")
 }
 
 type Review {

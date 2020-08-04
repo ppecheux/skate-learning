@@ -43,7 +43,7 @@ function TricksList({ loadingTricks, tricks, progress, loadingCircularProgress }
       <TrickCard
         name={name}
         loadingCircularProgress={loadingCircularProgress}
-        email={user.email}
+        userId={user.id}
         progress={progress} />
     </ListItem>)
   }

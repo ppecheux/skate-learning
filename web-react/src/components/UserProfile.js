@@ -12,11 +12,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import Skeleton from '@material-ui/lab/Skeleton';
 
 
-export default function UserProfile({ email, classes }) {
+export default function UserProfile({ userId, classes }) {
 
   const { loading, error, data } = useQuery(gql`
-    query UserQuery($email: String!) {
-      User(email: $email, first:1) {
+    query UserQuery($id: ID!) {
+      User(id: $id, first:1) {
         _id,
         profilePicture,
         name,
@@ -24,7 +24,7 @@ export default function UserProfile({ email, classes }) {
       }
     }
     `, {
-    variables: { email }
+    variables: { id: userId }
   })
   const avatarStyle = { height: null }
   let user;
@@ -47,9 +47,9 @@ export default function UserProfile({ email, classes }) {
       <Grid container spacing={3}>
         <Grid item xs>
           {
-            user.profilePicture
-              ? <Avatar alt={user.name ? user.name : "n"} src={user.profilePicture} style={avatarStyle} />
-              : <Skeleton variant="circle"><Avatar /></Skeleton>
+            user.loading
+              ? <Skeleton variant="circle"><Avatar /></Skeleton>
+              : <Avatar alt={user.name} src={user.profilePicture} style={avatarStyle} />
 
           }
         </Grid>

@@ -26,7 +26,7 @@ export default function ProfilePictureMenu({ classes, user }) {
 
   return (
     <div>
-      <Avatar alt={user.given_name} src={user.profilePicture} className={classes.orange} onClick={handleClick} />
+      <Avatar alt={user.name} src={user.profilePicture || "use_alt"} className={classes.orange} onClick={handleClick} />
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}

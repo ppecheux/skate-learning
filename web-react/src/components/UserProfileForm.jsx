@@ -18,15 +18,14 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export default ({ email }) => {
+export default ({ userId }) => {
   let history = useHistory();
 
   const [updateUser,
     { error: mutationError, data: mutationData }] = useMutation(gql`
-    mutation ($email: String!, $name: String!, $biography: String){
-        UpdateUser(email: $email, name: $name, biography: $biography) {
-            _id,
-            email,
+    mutation ($id: ID!, $name: String!, $biography: String){
+        UpdateUser(id: $id, name: $name, biography: $biography) {
+            id,
             name,
             biography
         }  
@@ -42,15 +41,15 @@ export default ({ email }) => {
   }, [mutationData, mutationError, history])
 
   const { loading, error, data } = useQuery(gql`
-    query UserQuery($email: String!) {
-      User(email: $email, first:1) {
+    query UserQuery($id: ID!) {
+      User(id: $id, first:1) {
         name,
         biography,
-        email
+        id
       }
     }
     `, {
-    variables: { email: email }
+    variables: { id: userId }
   })
 
   let user;
@@ -91,7 +90,7 @@ export default ({ email }) => {
         onSubmit={(values, { setSubmitting }) => {
           updateUser({
             variables: {
-              email: user.email,
+              id: user.id,
               name: values.name,
               biography: values.biography,
             }

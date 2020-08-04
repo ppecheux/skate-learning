@@ -5,10 +5,10 @@ import { Edit, FavoriteBorder, Favorite } from '@material-ui/icons'
 import { UserContext } from '../../../UserContext'
 import { Link } from 'react-router-dom'
 
-export default function TipCardPresentation({ tip, voters, loading, author: { _id, profilePicture, reputation, name } }) {
+export default function TipCardPresentation({ tip, voters, loading, author }) {
   const { user } = useContext(UserContext)
-
-  let authorPicture = <Skeleton variant="circle"><Avatar /></Skeleton>
+  const { id, profilePicture, reputation, name } = author || {}
+  console.log(author)
   let tipText = (
     <Skeleton>
       <Typography >
@@ -17,8 +17,9 @@ export default function TipCardPresentation({ tip, voters, loading, author: { _i
     </Skeleton>
   )
 
-  if (_id) {
-    authorPicture = (_id === user._id)
+  let authorPicture
+  if (id) {
+    authorPicture = (id === user.id)
       ?
       <IconButton>
         <Edit />
@@ -62,14 +63,14 @@ function VoteHeart({ voters, user }) {
   const [voted, setVoted] = useState(voters ? voters.filter(voter => voter === user._id).length : false)
 
   function handleClick() {
-    setVoted(!voted)
     if (voted) {
-      setVoteCount(voteCount + 1)
+      setVoteCount(voteCount - 1)
       //mutation for the add relation 
     } else {
-      setVoteCount(voteCount - 1)
+      setVoteCount(voteCount + 1)
       //mutation for the remove relation 
     }
+    setVoted(!voted)
 
   }
 
@@ -83,6 +84,7 @@ function VoteHeart({ voters, user }) {
 }
 
 function AuthorSignature({ profilePicture, reputation, name }) {
+
   return (
     <Grid container >
       <Grid item>
@@ -92,7 +94,7 @@ function AuthorSignature({ profilePicture, reputation, name }) {
             vertical: 'bottom',
             horizontal: 'right',
           }}>
-            <Avatar src={profilePicture} alt={name} />
+            <Avatar alt={name} src={profilePicture || "use_alt"} />
           </Badge>
         </Link>
       </Grid>

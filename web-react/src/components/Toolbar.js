@@ -25,17 +25,17 @@ const loginPicture =
   </Link>
 
 
-function ProfilePictureOrLogin({ classes, email }) {
+function ProfilePictureOrLogin({ classes, id }) {
 
   const { loading, error, data } = useQuery(gql`
-    query UserQuery($email: String!) {
-      User(email: $email, first:1) {
+    query UserQuery($id: ID!) {
+      User(id: $id, first:1) {
         profilePicture,
-        given_name
+        name
       }
     }
     `, {
-    variables: { email }
+    variables: { id }
   })
 
   if (loading || error || !data.User || !data.User.length) {
@@ -70,7 +70,7 @@ export function TopToolbar({ classes }) {
         </IconButton>
       </Link>
       {
-        user.email ? <ProfilePictureOrLogin classes={classes} email={user.email} /> : loginPicture
+        user.id ? <ProfilePictureOrLogin classes={classes} id={user.id} /> : loginPicture
       }
     </Toolbar>
 

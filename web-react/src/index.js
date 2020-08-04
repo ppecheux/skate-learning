@@ -37,8 +37,7 @@ export let client = new ApolloClient({
 });
 
 const Main = () => {
-
-  const [user, setUser] = useState({ email: token ? decode(token).userEmail : '', reputation: 0 });
+  const [user, setUser] = useState({ id: token ? decode(token).userId : null, reputation: 0 });
 
   useEffect(() => {
     const authLink = setContext((_, { headers }) => {

@@ -5,18 +5,18 @@ import { decode } from 'jsonwebtoken'
 
 const cookies = new Cookies()
 
-export const RouteWithEmail = ({ component: Component, ...rest }) => {
+export const RouteWithId = ({ component: Component, ...rest }) => {
   const token = cookies.get('accessToken')
-  let email = null
+  let userId = null
 
   if (!token) {
     console.log('no token found')
   } else {
     const user = decode(token)
-    if (!user || !user.userEmail) {
-      console.log('userEmail not in token')
+    if (!user || !user.userId) {
+      console.log('userId not in token')
     } else {
-      email = user.userEmail
+      userId = user.userId
     }
   }
 
@@ -24,8 +24,8 @@ export const RouteWithEmail = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        email ? (
-          <Component {...{ ...rest, ...props, email }} />
+        userId ? (
+          <Component {...{ ...rest, ...props, userId }} />
         ) : (
             <Redirect
               to={{ pathname: '/login', state: { referer: props.location } }}
