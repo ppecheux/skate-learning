@@ -11,6 +11,7 @@ import {
 import { Done, PlayArrow } from "@material-ui/icons";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Link } from "react-router-dom";
+import { useStyles } from "../../../style"
 
 
 export default function TrickCard({
@@ -20,35 +21,39 @@ export default function TrickCard({
   userId,
   loadingCircularProgress
 }) {
+  const classes = useStyles()
   return (
-    <Link to={"/trick/" + name}>
-      <Card>
-        <CardContent>
-          <Grid container justify="space-between" alignItems="center">
-            <Grid item>
-              {loadingTricks ? (
-                <Skeleton variant="text">
-                  <Typography >
-                    {"x".repeat(20)}
-                  </Typography>
-                </Skeleton>
-              ) : (
-                  <Typography >{name}</Typography>
+    <Box className={classes.card}>
+
+      <Link to={"/trick/" + name}>
+        <Card className={classes.card} >
+          <CardContent>
+            <Grid container justify="space-between" alignItems="center">
+              <Grid item>
+                {loadingTricks ? (
+                  <Skeleton variant="text">
+                    <Typography >
+                      {"x".repeat(20)}
+                    </Typography>
+                  </Skeleton>
+                ) : (
+                    <Typography >{name}</Typography>
+                  )}
+              </Grid>
+              <Grid item>
+                {userId && (
+                  <TrickCircularProgress
+                    progress={progress}
+                    loading={loadingCircularProgress}
+                  />
                 )}
+              </Grid>
             </Grid>
-            <Grid item>
-              {userId && (
-                <TrickCircularProgress
-                  progress={progress}
-                  loading={loadingCircularProgress}
-                />
-              )}
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    </Link>
-  );
+          </CardContent>
+        </Card>
+      </Link>
+    </Box>
+  )
 }
 
 
