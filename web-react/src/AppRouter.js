@@ -9,6 +9,7 @@ import { AddTrickPage } from './components/addTrickPage/AddTrickPage'
 import { RouteWithId } from './components/RouteWithId'
 import TrickPage from './components/trickPage/TrickPage'
 import ErrorPage from './components/ErrorPage'
+import InstagramAuth from './components/InstagramAuth'
 
 function AppRouter({ classes }) {
   return (
@@ -23,6 +24,7 @@ function AppRouter({ classes }) {
       <Route exact path="/login" component={GoogleButton} />
       <Route exact path="/trick/:name" component={TrickPage} />
       <RouteWithId exact path="/editProfile" component={UserProfileForm} />
+      <Route exact path="/instagram" component={InstagramAuth} />
       <Route render={() => <ErrorPage code="404" message="page not found" />} />
     </Switch>
   )

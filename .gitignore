@@ -11,8 +11,7 @@ build/
 
 # misc
 .DS_Store
-# we need env for production! 
-# .env 
+.env 
 .env.local
 .env.development.local
 .env.test.local
