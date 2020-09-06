@@ -1,13 +1,12 @@
 {
   "devDependencies": {
     "concurrently": "^5.2.0",
-    "eslint": "^6.6.0",
+    "dotenv": "^8.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.20.0",
     "execa": "^4.0.2",
     "grandstack": "^0.0.7",
-    "dotenv": "^8.2.0",
     "husky": ">=4",
     "lint-staged": ">=10",
     "prettier": "^2.0.5",
@@ -34,10 +33,15 @@
   "dependencies": {
     "@apollo/client": "^3.0.0",
     "@apollo/react-components": "^3.1.5",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
+    "apollo-cache-inmemory": "^1.6.6",
     "apollo-client": "^2.6.10",
     "apollo-link-context": "^1.0.20",
+    "apollo-link-http": "^1.5.17",
     "cookie-parser": "^1.4.5",
+    "cross-env": "^7.0.2",
     "formik": "^2.1.5",
     "formik-material-ui": "^3.0.0-alpha.0",
     "google-auth-library": "^6.0.5",
@@ -45,11 +49,30 @@
     "graphql-auth-directives": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
+    "material-ui": "^0.20.2",
     "neo4j-graphql-binding": "^1.2.0",
     "node-fetch": "^2.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "react-google-login": "^5.1.20",
     "react-instagram-login": "^1.4.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3",
     "universal-cookie": "^4.0.3",
     "yup": "^0.29.1"
-  }
+  },
+  "name": "skate-learning",
+  "description": "[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://grandstack.io/deploy-starter-netlify) [![Deploy to Vercel](https://vercel.com/button)](https://grandstack.io/deploy-starter-vercel) [![Provision Neo4j](https://grandstack.io/img/provision-neo4j.png)](https://sandbox.neo4j.com/?usecase=blank-sandbox)",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ppecheux/skate-learning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ppecheux/skate-learning/issues"
+  },
+  "homepage": "https://github.com/ppecheux/skate-learning#readme"
 }
