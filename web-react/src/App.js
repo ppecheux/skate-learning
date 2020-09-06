@@ -2,30 +2,9 @@ import React from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import AppRouter from './AppRouter'
 import { makeStyles } from '@material-ui/core/styles'
-import { orange } from '@material-ui/core/colors';
-import {
-  CssBaseline,
-  Box,
-  AppBar,
-  Typography,
-  Container,
-  Link as MUILink,
-} from '@material-ui/core'
-import { TopToolbar } from './components/Toolbar';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <MUILink color="inherit" href="https://grandstack.io/">{/* TODO change this link */}
-        aSkate
-      </MUILink>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
-
+import { orange } from '@material-ui/core/colors'
+import { CssBaseline, Box, AppBar, Container } from '@material-ui/core'
+import { TopToolbar } from './components/Toolbar'
 
 const drawerWidth = 240
 
@@ -33,8 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  toolbar: {
-  },
+  toolbar: {},
   toolbarIcon: {
     display: 'flex',
     alignItems: 'center',
@@ -95,21 +73,15 @@ export default function App() {
     <Router>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="absolute"
-        >
-          <TopToolbar
-            classes={classes}
-          />
+        <AppBar position="absolute">
+          <TopToolbar classes={classes} />
         </AppBar>
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
           <Container maxWidth="lg" className={classes.container}>
             <AppRouter classes={classes} />
 
-            <Box pt={4}>
-              <Copyright />
-            </Box>
+            <Box pt={4}></Box>
           </Container>
         </main>
       </div>

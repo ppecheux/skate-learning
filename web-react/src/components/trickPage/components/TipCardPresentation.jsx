@@ -50,7 +50,7 @@ export default function TipCardPresentation({ tip: { id, text, voters, loading, 
 function AuthorSignature({ author: { profilePicture, reputation, name, id }, user }) {
 
   return (
-    <Grid container >
+    <Grid container alignItems="center" spacing={1}>
       <Grid item>
         {
           (user && user.id === id)
